@@ -4,14 +4,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/geoffomen/go-app/pkg/config"
+	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/geoffomen/go-app/pkg/digestutil"
+	"github.com/geoffomen/go-app/pkg/myerr"
+	"github.com/geoffomen/go-app/pkg/vo"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/geoffomen/go-app/examples/account"
 	"github.com/geoffomen/go-app/examples/user"
-	"github.com/geoffomen/go-app/internal/pkg/config"
-	"github.com/geoffomen/go-app/internal/pkg/database"
-	"github.com/geoffomen/go-app/internal/pkg/digestutil"
-	"github.com/geoffomen/go-app/internal/pkg/myerr"
-	"github.com/geoffomen/go-app/internal/pkg/vo"
 )
 
 // Service ...

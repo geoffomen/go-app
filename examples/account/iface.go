@@ -1,8 +1,8 @@
 package account
 
 import (
-	"github.com/geoffomen/go-app/internal/pkg/database"
-	"github.com/geoffomen/go-app/internal/pkg/vo"
+	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/geoffomen/go-app/pkg/vo"
 )
 
 // Iface ..

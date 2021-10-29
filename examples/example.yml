@@ -1,6 +1,6 @@
 # 开发环境
 server:
-    port: 8080
+    port: 8000
     secret: exam-cnisgreat
     noNeedAuthPath: [
         "/exam/",

@@ -1,6 +1,8 @@
 package accountimp
 
-import "github.com/geoffomen/go-app/internal/pkg/vo"
+import (
+	"github.com/geoffomen/go-app/pkg/vo"
+)
 
 // AccountEntity 登录帐号
 type AccountEntity struct {

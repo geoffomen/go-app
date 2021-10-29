@@ -4,9 +4,9 @@ import (
 	"github.com/geoffomen/go-app/examples/account"
 	"github.com/geoffomen/go-app/examples/account/accountimp"
 	"github.com/geoffomen/go-app/examples/user/userimp"
-	"github.com/geoffomen/go-app/internal/pkg/config"
-	"github.com/geoffomen/go-app/internal/pkg/database"
-	"github.com/geoffomen/go-app/internal/pkg/vo"
+	"github.com/geoffomen/go-app/pkg/config"
+	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/geoffomen/go-app/pkg/vo"
 )
 
 // Controller ..

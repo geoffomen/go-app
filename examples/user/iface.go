@@ -1,6 +1,8 @@
 package user
 
-import "github.com/geoffomen/go-app/internal/pkg/database"
+import (
+	"github.com/geoffomen/go-app/pkg/database"
+)
 
 // Iface 用户模块导出函数
 type Iface interface {

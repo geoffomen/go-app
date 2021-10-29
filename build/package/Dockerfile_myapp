@@ -1,0 +1,13 @@
+FROM golang:1-alpine3.15 AS builder
+# ENV http_proxy 'https://user:pass@domain:443'
+# ENV https_proxy 'https://user:pass@domain:443'
+COPY . /opt/myapp
+WORKDIR /opt/myapp
+RUN apk add --no-cache make git gcc musl-dev && make myapp
+
+
+FROM alpine:20210804
+COPY --from=builder /opt/myapp/build/temp/myapp.o /opt/myapp/
+COPY ./configs /opt/myapp/configs/
+WORKDIR /opt/myapp
+CMD ["/opt/myapp/myapp.o", "--profile=release"]

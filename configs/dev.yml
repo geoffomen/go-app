@@ -1,19 +1,19 @@
-# 开发环境
+# 开发环境配置
 server:
-    port: 8080
-    secret: dev-cnisgreat
+    port: 8000
+    secret: zh666-dev
     noNeedAuthPath: [
         "/api/v1/account/register",
         "/api/v1/account/login"
     ]
 
 database:
-    dialect: sqlite
+    dialect: mysql
     host: localhost
     port: 3306
-    db: /tmp/test.db
-    userName: 
-    password: 
+    db: myapp
+    userName: root
+    password: password
     otherParams: charset=utf8mb4&parseTime=True&loc=Local
     # 最大空闲连接数
     maxIdleConns: 3
@@ -21,6 +21,16 @@ database:
     maxOpenConns: 50
     # 连接超时关闭时间,单位:秒
     connMaxLifetime: 60
+    log:
+        enableConsole: true
+        consoleJSONFormat: false
+        consoleLevel: debug
+        enableFile: false
+        fileJSONFormat: false
+        fileLevel: info
+        fileLocation: /tmp/log/myapp/dbInfo.log
+        errFileLevel: error
+        errFileLocation: /tmp/log/myapp/dbError.log
 
 log:
     enableConsole: true
@@ -29,6 +39,6 @@ log:
     enableFile: false
     fileJSONFormat: false
     fileLevel: info
-    fileLocation: /tmp/logs/myapp/info.log
+    fileLocation: /tmp/log/myapp/info.log
     errFileLevel: error
-    errFileLocation: /tmp/logs/myapp/error.log
+    errFileLocation: /tmp/log/myapp/error.log

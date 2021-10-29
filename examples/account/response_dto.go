@@ -1,6 +1,8 @@
 package account
 
-import "github.com/geoffomen/go-app/internal/pkg/vo"
+import (
+	"github.com/geoffomen/go-app/pkg/vo"
+)
 
 type LoginResponseDto struct {
 	Uid         int       `json:"uid"`

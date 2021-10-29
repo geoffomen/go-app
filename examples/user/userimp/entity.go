@@ -1,6 +1,8 @@
 package userimp
 
-import "github.com/geoffomen/go-app/internal/pkg/vo"
+import (
+	"github.com/geoffomen/go-app/pkg/vo"
+)
 
 type UserEntity struct {
 	vo.BaseEntity        // 包含相关属性

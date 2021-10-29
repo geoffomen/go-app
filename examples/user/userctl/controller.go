@@ -3,7 +3,7 @@ package userctl
 import (
 	"github.com/geoffomen/go-app/examples/user"
 	"github.com/geoffomen/go-app/examples/user/userimp"
-	"github.com/geoffomen/go-app/internal/pkg/database"
+	"github.com/geoffomen/go-app/pkg/database"
 )
 
 // Controller ..

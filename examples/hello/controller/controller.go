@@ -6,10 +6,11 @@ import (
 	"mime/multipart"
 	"net/http"
 
+	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/geoffomen/go-app/pkg/vo"
+
 	"github.com/geoffomen/go-app/examples/hello"
 	"github.com/geoffomen/go-app/examples/hello/impl"
-	"github.com/geoffomen/go-app/internal/pkg/database"
-	"github.com/geoffomen/go-app/internal/pkg/vo"
 )
 
 // Controller ..
