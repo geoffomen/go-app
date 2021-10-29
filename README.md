@@ -14,7 +14,7 @@
 ├── docs (项目文档目录)
 │   └── README.md
 ├── examples (项目例子)
-│   ├── account
+│   ├── account (功能模块)
 │   │   ├── accountctl (路由)
 │   │   │   └── controller.go
 │   │   ├── accountimp (实现)
@@ -23,14 +23,14 @@
 │   │   ├── iface.go (模块接口)
 │   │   ├── request_dto.go (请求DTO)
 │   │   └── response_dto.go (响应DTO)
-│   ├── user
-│   ├── hello
-│   ├── README.md
-│   ├── example.yml
-│   ├── main.go
-│   └── api_test.go
+│   ├── user (功能模块)
+│   ├── hello (功能模块)
+│   ├── README.md (说明)
+│   ├── example.yml (配置文件)
+│   ├── main.go (例子入口函数)
+│   └── api_test.go 
 ├── internal
-│   ├── app (业务代码)
+│   ├── app (业务代码，结构与examples一致)
 │   │   └── myapp
 │   ├── pkg (基础组件)
 │   │   ├── config (配置读取封装)
