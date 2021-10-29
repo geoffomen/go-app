@@ -1,0 +1,22 @@
+package {{.ModuleName}}ctl
+
+import (
+	"fmt"
+
+	"{{.GroupId}}/{{.ArtifactId}}/internal/pkg/database"
+	"{{.GroupId}}/{{.ArtifactId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}imp"
+)
+
+// Controller ..
+func Controller() map[string]interface{} {
+	srv := {{.ModuleName}}imp.New(
+		database.GetClient(),
+	)
+
+	return map[string]interface{}{
+		"Get /api/v1/": func() (interface{}, error) {
+			fmt.Printf("%v", srv)
+			return nil, nil
+		},
+	}
+}

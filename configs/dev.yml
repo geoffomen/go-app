@@ -1,0 +1,34 @@
+# 开发环境
+server:
+    port: 8080
+    secret: dev-cnisgreat
+    noNeedAuthPath: [
+        "/api/v1/account/register",
+        "/api/v1/account/login"
+    ]
+
+database:
+    dialect: sqlite
+    host: localhost
+    port: 3306
+    db: /tmp/test.db
+    userName: 
+    password: 
+    otherParams: charset=utf8mb4&parseTime=True&loc=Local
+    # 最大空闲连接数
+    maxIdleConns: 3
+    # 最大连接数
+    maxOpenConns: 50
+    # 连接超时关闭时间,单位:秒
+    connMaxLifetime: 60
+
+log:
+    enableConsole: true
+    consoleJSONFormat: false
+    consoleLevel: debug
+    enableFile: false
+    fileJSONFormat: false
+    fileLevel: info
+    fileLocation: /tmp/logs/myapp/info.log
+    errFileLevel: error
+    errFileLocation: /tmp/logs/myapp/error.log

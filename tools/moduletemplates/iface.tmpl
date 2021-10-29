@@ -1,0 +1,9 @@
+package {{.ModuleName}}
+
+import (
+	"{{.GroupId}}/{{.ArtifactId}}/internal/pkg/database"
+)
+
+type Iface interface {
+	NewWithDb(db *database.Client) Iface
+}

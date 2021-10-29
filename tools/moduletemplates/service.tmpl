@@ -1,0 +1,34 @@
+package {{.ModuleName}}imp
+
+import (
+	"{{.GroupId}}/{{.ArtifactId}}/internal/pkg/database"
+	"{{.GroupId}}/{{.ArtifactId}}/internal/app/{{.AppName}}/{{.ModuleName}}"
+)
+
+type Service struct {
+	db *database.Client
+}
+
+var instance *Service = &Service{}
+
+// New ...
+func New(db *database.Client,
+) *Service {
+	*instance = Service{
+		db: db,
+	}
+	return instance
+}
+
+// GetInstance ..
+func GetInstance() *Service {
+	return instance
+}
+
+// NewWithDBClient ..
+func (srv *Service) NewWithDb(db *database.Client) {{.ModuleName}}.Iface {
+	newSrv := *instance
+	newSrv.db = db
+	return &newSrv
+}
+

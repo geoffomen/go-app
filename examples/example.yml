@@ -1,0 +1,22 @@
+# 开发环境
+server:
+    port: 8080
+    secret: exam-cnisgreat
+    noNeedAuthPath: [
+        "/exam/",
+    ]
+
+database:
+    dialect: sqlite
+    db: /tmp/exam.sqlitedb
+
+log:
+    enableConsole: true
+    consoleJSONFormat: false
+    consoleLevel: debug
+    enableFile: false
+    fileJSONFormat: false
+    fileLevel: debug
+    fileLocation: /tmp/logs/info.log
+    errFileLevel: error
+    errFileLocation: /tmp/logs/error.log
