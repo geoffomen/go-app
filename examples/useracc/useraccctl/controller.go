@@ -1,12 +1,12 @@
 package useraccctl
 
 import (
-	"github.com/geoffomen/go-app/examples/user/userimp"
-	"github.com/geoffomen/go-app/examples/useracc"
-	"github.com/geoffomen/go-app/examples/useracc/useraccimp"
-	"github.com/geoffomen/go-app/pkg/config"
-	"github.com/geoffomen/go-app/pkg/database"
-	"github.com/geoffomen/go-app/pkg/webfw"
+	"github.com/storm-5/go-app/examples/user/userimp"
+	"github.com/storm-5/go-app/examples/useracc"
+	"github.com/storm-5/go-app/examples/useracc/useraccimp"
+	"github.com/storm-5/go-app/pkg/config"
+	"github.com/storm-5/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/webfw"
 )
 
 var (

@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	groupId    string = "github.com/geoffomen"
+	groupId    string = "github.com/storm-5"
 	artifactId string = "go-app"
 	appName    string = "myapp"
 )

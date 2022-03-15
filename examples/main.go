@@ -5,20 +5,20 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/geoffomen/go-app/pkg/config"
-	"github.com/geoffomen/go-app/pkg/config/viperimp"
-	"github.com/geoffomen/go-app/pkg/cronjob"
-	"github.com/geoffomen/go-app/pkg/cronjob/robfigimp"
-	"github.com/geoffomen/go-app/pkg/database"
-	"github.com/geoffomen/go-app/pkg/database/gormimp"
-	"github.com/geoffomen/go-app/pkg/mylog"
-	"github.com/geoffomen/go-app/pkg/mylog/zapimp"
-	"github.com/geoffomen/go-app/pkg/webfw"
-	"github.com/geoffomen/go-app/pkg/webfw/ginimp"
+	"github.com/storm-5/go-app/pkg/config"
+	"github.com/storm-5/go-app/pkg/config/viperimp"
+	"github.com/storm-5/go-app/pkg/cronjob"
+	"github.com/storm-5/go-app/pkg/cronjob/robfigimp"
+	"github.com/storm-5/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/database/gormimp"
+	"github.com/storm-5/go-app/pkg/mylog"
+	"github.com/storm-5/go-app/pkg/mylog/zapimp"
+	"github.com/storm-5/go-app/pkg/webfw"
+	"github.com/storm-5/go-app/pkg/webfw/ginimp"
 
-	"github.com/geoffomen/go-app/examples/hello/controller"
-	"github.com/geoffomen/go-app/examples/user/userctl"
-	"github.com/geoffomen/go-app/examples/useracc/useraccctl"
+	"github.com/storm-5/go-app/examples/hello/controller"
+	"github.com/storm-5/go-app/examples/user/userctl"
+	"github.com/storm-5/go-app/examples/useracc/useraccctl"
 )
 
 var (

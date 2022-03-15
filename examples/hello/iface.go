@@ -1,8 +1,8 @@
 package hello
 
 import (
-	"github.com/geoffomen/go-app/pkg/database"
-	"github.com/geoffomen/go-app/pkg/webfw"
+	"github.com/storm-5/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/webfw"
 )
 
 type Iface interface {

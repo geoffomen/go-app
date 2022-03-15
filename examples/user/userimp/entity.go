@@ -1,7 +1,7 @@
 package userimp
 
 import (
-	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/database"
 )
 
 type UserEntity struct {

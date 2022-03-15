@@ -3,11 +3,11 @@ package impl
 import (
 	"fmt"
 
-	"github.com/geoffomen/go-app/pkg/database"
-	"github.com/geoffomen/go-app/pkg/myerr"
-	"github.com/geoffomen/go-app/pkg/webfw"
+	"github.com/storm-5/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/myerr"
+	"github.com/storm-5/go-app/pkg/webfw"
 
-	"github.com/geoffomen/go-app/examples/hello"
+	"github.com/storm-5/go-app/examples/hello"
 )
 
 type Service struct {

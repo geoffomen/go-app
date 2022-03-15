@@ -1,9 +1,9 @@
 package userctl
 
 import (
-	"github.com/geoffomen/go-app/examples/user"
-	"github.com/geoffomen/go-app/examples/user/userimp"
-	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/storm-5/go-app/examples/user"
+	"github.com/storm-5/go-app/examples/user/userimp"
+	"github.com/storm-5/go-app/pkg/database"
 )
 
 var (

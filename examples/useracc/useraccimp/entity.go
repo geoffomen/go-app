@@ -1,6 +1,6 @@
 package useraccimp
 
-import "github.com/geoffomen/go-app/pkg/database"
+import "github.com/storm-5/go-app/pkg/database"
 
 // AccountEntity 登录帐号
 type AccountEntity struct {

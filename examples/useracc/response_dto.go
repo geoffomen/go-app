@@ -1,6 +1,6 @@
 package useracc
 
-import "github.com/geoffomen/go-app/pkg/database"
+import "github.com/storm-5/go-app/pkg/database"
 
 type LoginResponseDto struct {
 	Uid         int             `json:"uid"`

@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/database"
 )
 
 // Iface 用户模块导出函数

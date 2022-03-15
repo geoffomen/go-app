@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/geoffomen/go-app/pkg/config/viperimp"
-	"github.com/geoffomen/go-app/pkg/database"
-	"github.com/geoffomen/go-app/pkg/database/gormimp"
-	"github.com/geoffomen/go-app/pkg/httpclient"
-	"github.com/geoffomen/go-app/pkg/mylog"
-	"github.com/geoffomen/go-app/pkg/mylog/zapimp"
+	"github.com/storm-5/go-app/pkg/config/viperimp"
+	"github.com/storm-5/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/database/gormimp"
+	"github.com/storm-5/go-app/pkg/httpclient"
+	"github.com/storm-5/go-app/pkg/mylog"
+	"github.com/storm-5/go-app/pkg/mylog/zapimp"
 
-	"github.com/geoffomen/go-app/examples/user/userimp"
-	"github.com/geoffomen/go-app/examples/useracc/useraccimp"
+	"github.com/storm-5/go-app/examples/user/userimp"
+	"github.com/storm-5/go-app/examples/useracc/useraccimp"
 )
 
 func TestApi(t *testing.T) {

@@ -6,11 +6,11 @@ import (
 	"mime/multipart"
 	"net/http"
 
-	"github.com/geoffomen/go-app/pkg/database"
-	"github.com/geoffomen/go-app/pkg/webfw"
+	"github.com/storm-5/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/webfw"
 
-	"github.com/geoffomen/go-app/examples/hello"
-	"github.com/geoffomen/go-app/examples/hello/impl"
+	"github.com/storm-5/go-app/examples/hello"
+	"github.com/storm-5/go-app/examples/hello/impl"
 )
 
 var (

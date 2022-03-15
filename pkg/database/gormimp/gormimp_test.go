@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/database"
 	"github.com/stretchr/testify/assert"
 )
 

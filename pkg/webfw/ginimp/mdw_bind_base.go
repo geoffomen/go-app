@@ -7,8 +7,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/geoffomen/go-app/pkg/database"
-	"github.com/geoffomen/go-app/pkg/webfw"
+	"github.com/storm-5/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/webfw"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )

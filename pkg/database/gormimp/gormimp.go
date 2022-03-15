@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/storm-5/go-app/pkg/database"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

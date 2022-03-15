@@ -1,4 +1,4 @@
-module github.com/geoffomen/go-app
+module github.com/storm-5/go-app
 
 go 1.15
 
