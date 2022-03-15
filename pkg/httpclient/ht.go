@@ -13,8 +13,6 @@ import (
 	"net/url"
 	"os"
 	"time"
-
-	"github.com/geoffomen/go-app/pkg/myerr"
 )
 
 var cl http.Client = http.Client{
@@ -39,7 +37,7 @@ func doRequest(req *http.Request) ([]byte, error) {
 		if err != nil {
 			return nil, fmt.Errorf("status_code: %d, 读取响应信息失败: %s", rsp.StatusCode, err)
 		}
-		return nil, myerr.Newf("status_code: %d, content: %s", rsp.StatusCode, b)
+		return nil, fmt.Errorf("status_code: %d, content: %s", rsp.StatusCode, b)
 	}
 	b, err := ioutil.ReadAll(rsp.Body)
 	if err != nil {

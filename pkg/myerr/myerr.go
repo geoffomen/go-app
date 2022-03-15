@@ -1,14 +1,15 @@
 package myerr
 
-
 import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
 )
 
+type Loglevel = int
+
 const (
-	LogLevelDebug int = iota
+	LogLevelDebug Loglevel = iota
 	LogLevelWarnning
 	LogLevelInfo
 )
@@ -18,7 +19,7 @@ type MyError struct {
 	Code     int
 	Messages []string
 	Stack    string
-	LogLevel int // 决定如何记录该错误，默认为LogLevelDebug，表示应该记录在错误日志，其它等级则不建议记录在错误日志。需要显式指定
+	LogLevel Loglevel // 决定如何记录该错误，默认为LogLevelDebug，表示应该记录在错误日志，其它等级则不建议记录在错误日志。需要显式指定
 }
 
 func (e *MyError) Error() string {

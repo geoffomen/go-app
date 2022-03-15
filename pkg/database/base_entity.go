@@ -1,4 +1,4 @@
-package vo
+package database
 
 import (
 	"database/sql/driver"
@@ -8,28 +8,18 @@ import (
 	"time"
 )
 
-// Validate 用于参数校验。只要请求的DTO实现这个接口，就会在绑定完参数后调用。
-type Validate interface {
-	Validate() ([]string, error)
-}
-
-// SessionInfo 记录会话信息
-type SessionInfo struct {
-	Uid           int    `json:"uid"`
-	Name          string `json:"nickName"`
-	Token         string `json:"token"`
-	TokenExpireAt int64  `json:"tokenExpireAt"`
-}
-
 // BaseEntity ...
 type BaseEntity struct {
-	Id int `json:"id" gorm:"primaryKey"`
-	// 创建时间,毫秒值(13位)
+	Id int `json:"id"`
+	// 创建时间
 	CreatedTime Mytime `json:"createdTime"`
-	// 最后修改时间
+	CreatedBy   int    `json:"createdBy"`
+	// 最近修改时间
 	UpdatedTime Mytime `json:"updatedTime"`
-	// 数据版本
-	Version int `json:"version"`
+	UpdatedBy   int    `josn:"updatedBy"`
+	// 删除时间
+	DeletedTime Mytime `json:"deletedTime"`
+	DeletedBy   int    `json:"deletedBy"`
 }
 
 // Mytime used with orm

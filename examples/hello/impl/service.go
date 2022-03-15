@@ -5,7 +5,7 @@ import (
 
 	"github.com/geoffomen/go-app/pkg/database"
 	"github.com/geoffomen/go-app/pkg/myerr"
-	"github.com/geoffomen/go-app/pkg/vo"
+	"github.com/geoffomen/go-app/pkg/webfw"
 
 	"github.com/geoffomen/go-app/examples/hello"
 )
@@ -37,7 +37,7 @@ func (srv *Service) NewWithDb(db *database.Client) hello.Iface {
 	return &newSrv
 }
 
-func (srv *Service) SayHello(sessInfo vo.SessionInfo) (interface{}, error) {
+func (srv *Service) SayHello(sessInfo webfw.SessionInfo) (interface{}, error) {
 	return fmt.Sprintf("HELLO, %s!", sessInfo.Name), nil
 }
 

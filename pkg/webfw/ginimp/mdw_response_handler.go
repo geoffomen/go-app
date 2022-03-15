@@ -6,7 +6,7 @@ import (
 	"reflect"
 
 	"github.com/geoffomen/go-app/pkg/myerr"
-	"github.com/geoffomen/go-app/pkg/vo"
+	"github.com/geoffomen/go-app/pkg/webfw"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,13 +25,13 @@ func responseHandler() gin.HandlerFunc {
 		}
 		rsps, exist := c.Get("responses")
 		if !exist {
-			lgg.Errorf("method: %s, path: %s, requestArgs: %v, msg: %s",
+			log.Errorf("method: %s, path: %s, requestArgs: %v, msg: %s",
 				method,
 				path,
 				reflectValueToString(args),
 				c.Errors.Errors(),
 			)
-			c.JSON(200, vo.BaseRspDto{Code: c.Writer.Status(), Msg: c.Errors.Last().Error()})
+			c.JSON(200, webfw.BaseRspDto{Code: c.Writer.Status(), Msg: c.Errors.Last().Error()})
 			return
 		}
 		responses := rsps.([]reflect.Value)
@@ -41,12 +41,12 @@ func responseHandler() gin.HandlerFunc {
 			switch err := err.(type) {
 			case *myerr.MyError:
 				detailErrMsg = err.Marshal()
-				c.JSON(200, vo.BaseRspDto{Code: err.Code, Msg: err.Error()})
+				c.JSON(200, webfw.BaseRspDto{Code: err.Code, Msg: err.Error()})
 			default:
 				detailErrMsg = fmt.Sprintf("%s", err)
-				c.JSON(200, vo.BaseRspDto{Code: http.StatusInternalServerError, Msg: http.StatusText(http.StatusInternalServerError)})
+				c.JSON(200, webfw.BaseRspDto{Code: http.StatusInternalServerError, Msg: http.StatusText(http.StatusInternalServerError)})
 			}
-			lgg.Errorf("method: %s, path: %s, requestArgs: %v, msg: %s",
+			log.Errorf("method: %s, path: %s, requestArgs: %v, msg: %s",
 				method,
 				path,
 				reflectValueToString(args),
@@ -56,12 +56,12 @@ func responseHandler() gin.HandlerFunc {
 			switch rt := responses[0].Interface().(type) {
 			case http.ResponseWriter:
 				// fmt.Println("")
-			case vo.ByteStreamRspDto:
+			case webfw.ByteStreamRspDto:
 				c.DataFromReader(http.StatusOK, rt.ContentLength, rt.ContentType, rt.Reader, rt.ExtraHeaders)
-			case vo.FileStreamRspDto:
+			case webfw.FileStreamRspDto:
 				c.FileAttachment(rt.Path, rt.FileName)
 			default:
-				c.JSON(200, vo.BaseRspDto{Code: 0, Msg: "ok", Data: rt})
+				c.JSON(200, webfw.BaseRspDto{Code: 0, Msg: "ok", Data: rt})
 			}
 		}
 	}

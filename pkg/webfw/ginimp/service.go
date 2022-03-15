@@ -7,15 +7,14 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/geoffomen/go-app/pkg/vo"
-
+	"github.com/geoffomen/go-app/pkg/config"
+	"github.com/geoffomen/go-app/pkg/webfw"
 	"github.com/gin-gonic/gin"
 )
 
 // Gin ...
 type Gin struct {
 	engine *gin.Engine
-	conf   *Configuration
 }
 
 type GinLogger interface {
@@ -25,26 +24,22 @@ type GinLogger interface {
 	Errorf(format string, args ...interface{})
 }
 
-type Configuration struct {
-	Profile string
-	Port    string
-}
-
 var (
 	pathToHandler = make(map[string]interface{})
 	pathToMethod  = make(map[string][]string)
-	lgg           GinLogger
+	log           GinLogger
+	conf   config.Iface
 )
 
 // NewGin ..
-func New(conf Configuration, lg GinLogger) (*Gin, error) {
-	if conf.Profile == "release" {
+func New(cf config.Iface, lg GinLogger) (*Gin, error) {
+	conf = cf
+	log = lg
+	if conf.GetProfile() == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	lgg = lg
 	// Creates a router without any middleware by default
 	engine := gin.New()
-
 	engine.Use(recovery())
 	engine.Use(logger())
 	engine.Use(responseHandler())
@@ -59,7 +54,6 @@ func New(conf Configuration, lg GinLogger) (*Gin, error) {
 
 	return &Gin{
 		engine: engine,
-		conf:   &conf,
 	}, nil
 
 }
@@ -124,7 +118,7 @@ func (s *Gin) RegisterHandler(m map[string]interface{}) {
 
 // Start ..
 func (s *Gin) Start() error {
-	s.engine.Run(":" + s.conf.Port)
+	s.engine.Run(":" + conf.GetStringOrDefault("server.port", "8080"))
 	return nil
 }
 
@@ -147,7 +141,7 @@ func wrapper(handler interface{}) gin.HandlerFunc {
 				args = make([]reflect.Value, 0)
 			case 1:
 				fType := handlerType.In(0)
-				if fType.String() == reflect.TypeOf(vo.SessionInfo{}).String() {
+				if fType.String() == reflect.TypeOf(webfw.SessionInfo{}).String() {
 					sessionInfo, exist := c.Get("sessionInfo")
 					if !exist {
 						c.Error(fmt.Errorf("no session info"))
@@ -155,7 +149,7 @@ func wrapper(handler interface{}) gin.HandlerFunc {
 						c.Abort()
 						return
 					}
-					sessInfo, ok := sessionInfo.(vo.SessionInfo)
+					sessInfo, ok := sessionInfo.(webfw.SessionInfo)
 					if !ok {
 						c.Error(fmt.Errorf("no session info"))
 						c.Status(500)

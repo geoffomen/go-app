@@ -3,11 +3,12 @@ package ginimp
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/geoffomen/go-app/pkg/vo"
 	"path"
 	"reflect"
 	"strings"
 
+	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/geoffomen/go-app/pkg/webfw"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -48,19 +49,19 @@ func bindArgs(c *gin.Context, h func(c *gin.Context, ft reflect.Type) (reflect.V
 				return nil, err
 			}
 			args[i] = reflect.ValueOf(r)
-		case reflect.TypeOf(vo.SessionInfo{}).String():
+		case reflect.TypeOf(webfw.SessionInfo{}).String():
 			sessionInfo, exist := c.Get("sessionInfo")
 			if !exist {
 				return nil, fmt.Errorf("no session info")
 			}
-			sessInfo := sessionInfo.(vo.SessionInfo)
+			sessInfo := sessionInfo.(webfw.SessionInfo)
 			args[i] = reflect.ValueOf(sessInfo)
 		default:
 			fv, err := h(c, fType)
 			if err != nil {
 				return nil, err
 			}
-			nv, ok := fv.Interface().(vo.Validate)
+			nv, ok := fv.Interface().(webfw.Validate)
 			if ok {
 				msg, err := nv.Validate()
 				if err != nil {
@@ -86,7 +87,7 @@ func bindStruct(c *gin.Context, ft reflect.Type, bd binding.Binding) (reflect.Va
 		field := ft.Field(i)
 		if field.Type.Kind() == reflect.Struct || field.Type.Kind() == reflect.Ptr {
 			switch field.Type.String() {
-			case "vo.Mytime":
+			case "database.Mytime":
 				var p string
 				switch bd {
 				case binding.Query:
@@ -94,7 +95,7 @@ func bindStruct(c *gin.Context, ft reflect.Type, bd binding.Binding) (reflect.Va
 				default:
 					p = c.PostForm(LowerFirst(field.Name))
 				}
-				tv := vo.Mytime{}
+				tv := database.Mytime{}
 				json.Unmarshal([]byte(p), &tv)
 				m[i] = reflect.ValueOf(tv)
 			default:

@@ -1,12 +1,5 @@
 package cronjob
 
-import (
-	"fmt"
-	"sync"
-
-	"github.com/geoffomen/go-app/pkg/cronjob/robfigimp"
-)
-
 // Iface ..
 type Iface interface {
 	Start()
@@ -15,25 +8,12 @@ type Iface interface {
 }
 
 var (
-	once     sync.Once
-	ins      Iface
-	isInited bool = false
+	ins Iface
 )
 
-// New
-func New(profile string, logger robfigimp.LogIface) Iface {
-	once.Do(func() {
-		if isInited {
-			return
-		}
-		service, err := robfigimp.New(logger)
-		if err != nil {
-			panic(fmt.Sprintf("failed to initrialize config component, err: %v", err))
-		}
-		ins = service
-		isInited = true
-	})
-	return ins
+// SetInstance
+func SetInstance(i Iface) {
+	ins = i
 }
 
 // GetInstance ..

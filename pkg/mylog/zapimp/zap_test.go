@@ -1,13 +1,14 @@
-package mylog
+package zapimp
 
 import (
+	"fmt"
 	"testing"
 )
 
 func Test_log(t *testing.T) {
-	New(Configuration{
+	zp, err := New(Configuration{
 		EnableConsole:     true,
-		ConsoleJSONFormat: false,
+		ConsoleJSONFormat: true,
 		ConsoleLevel:      "debug",
 		EnableFile:        true,
 		FileJSONFormat:    true,
@@ -16,11 +17,11 @@ func Test_log(t *testing.T) {
 		ErrFileLevel:      "error",
 		ErrFileLocation:   "/tmp/miis/back/err.log",
 	})
-	ins := GetInstance()
-	ins.Debugf("debug")
-	ins.Infof("info")
-	ins.Warnf("warn")
-	ins.Errorf("error")
-	// Panicf("panic")
-	// Fatal("fatal")
+	if err != nil {
+		panic(fmt.Sprintf("failed to initrialize web framwork, err: %s", err))
+	}
+	zp.Debugf("debug")
+	zp.Infof("info")
+	zp.Warnf("warn")
+	zp.Errorf("error")
 }

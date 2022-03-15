@@ -24,7 +24,7 @@ func logger() gin.HandlerFunc {
 		args, exists := c.Get("args")
 		if exists {
 			ags := args.([]reflect.Value)
-			lgg.Infof("status: %3d, cost: %13v, clientIp: %15s, method: %s, path: %s, args: %s",
+			log.Infof("status: %3d, cost: %13v, clientIp: %15s, method: %s, path: %s, args: %s",
 				statusCode,
 				cost,
 				clientIP,
@@ -33,7 +33,7 @@ func logger() gin.HandlerFunc {
 				reflectValueToString(ags),
 			)
 		} else {
-			lgg.Infof("status: %3d, cost: %13v, clientIp: %15s, method: %s, path: %s",
+			log.Infof("status: %3d, cost: %13v, clientIp: %15s, method: %s, path: %s",
 				statusCode,
 				cost,
 				clientIP,

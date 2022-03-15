@@ -5,7 +5,7 @@ import (
 
 	"github.com/geoffomen/go-app/pkg/database"
 	"github.com/geoffomen/go-app/pkg/myerr"
-	vo2 "github.com/geoffomen/go-app/pkg/vo"
+	"github.com/geoffomen/go-app/pkg/webfw"
 
 	"github.com/geoffomen/go-app/examples/user"
 )
@@ -41,14 +41,13 @@ func (srv *Service) NewWithDb(db *database.Client) user.Iface {
 
 func (srv *Service) Create(param user.CreateUserRequestDto) (int, error) {
 	userEntity := UserEntity{
-		BaseEntity: vo2.BaseEntity{
-			CreatedTime: vo2.Mytime{
+		BaseEntity: database.BaseEntity{
+			CreatedTime: database.Mytime{
 				Time: time.Now(),
 			},
-			UpdatedTime: vo2.Mytime{
+			UpdatedTime: database.Mytime{
 				Time: time.Now(),
 			},
-			Version: 0,
 		},
 		Name:     param.Name,
 		NickName: param.NickName,
@@ -82,7 +81,7 @@ func (srv *Service) GetUserInfo(param user.GetUserInfoRequestDto) (user.UserInfo
 	return rt, nil
 }
 
-func (srv *Service) Page(param user.PageRequestDto) (*vo2.PageResponseDto, error) {
+func (srv *Service) Page(param user.PageRequestDto) (*webfw.PageResponseDto, error) {
 	sql := srv.db.GetStmt().Table(UserEntity{}.TableName())
 	if param.Keyword != "" {
 		sql.Where("name like ?", "%"+param.Keyword+"%")
@@ -112,7 +111,7 @@ func (srv *Service) Page(param user.PageRequestDto) (*vo2.PageResponseDto, error
 		}
 		dt = append(dt, o)
 	}
-	return &vo2.PageResponseDto{
+	return &webfw.PageResponseDto{
 		Total:    total,
 		PageSize: len(es),
 		List:     dt,

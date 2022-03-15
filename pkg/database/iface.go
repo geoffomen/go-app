@@ -148,8 +148,8 @@ var (
 	ins Iface
 )
 
-// New ...
-func New(db Iface) {
+// SetInstance ...
+func SetInstance(db Iface) {
 	ins = db
 }
 

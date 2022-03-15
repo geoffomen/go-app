@@ -5,23 +5,21 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/geoffomen/go-app/pkg/config"
-	"github.com/geoffomen/go-app/pkg/vo"
-
+	"github.com/geoffomen/go-app/pkg/webfw"
 	"github.com/gin-gonic/gin"
 )
 
 func authorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		needAuth := true
-		for _, p := range config.GetInstance().GetStringSliceOrDefault("server.noNeedAuthPath", []string{}) {
+		for _, p := range conf.GetStringSliceOrDefault("server.noNeedAuthPath", []string{}) {
 			if strings.HasPrefix(c.Request.URL.Path, p) {
 				needAuth = false
 				break
 			}
 		}
 
-		sessionInfo := &vo.SessionInfo{}
+		sessionInfo := &webfw.SessionInfo{}
 		if needAuth {
 			// do auth check
 			authStr := c.GetHeader("Authorization")

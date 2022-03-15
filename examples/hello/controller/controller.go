@@ -7,21 +7,29 @@ import (
 	"net/http"
 
 	"github.com/geoffomen/go-app/pkg/database"
-	"github.com/geoffomen/go-app/pkg/vo"
+	"github.com/geoffomen/go-app/pkg/webfw"
 
 	"github.com/geoffomen/go-app/examples/hello"
 	"github.com/geoffomen/go-app/examples/hello/impl"
 )
 
+var (
+	controllers map[string]interface{} = make(map[string]interface{})
+	srv         *impl.Service
+)
+
 // Controller ..
 func Controller() map[string]interface{} {
-	srv := impl.New(
+	srv = impl.New(
 		database.GetClient(),
 	)
+	return controllers
+}
 
-	return map[string]interface{}{
+func init() {
+	m := map[string]interface{}{
 
-		"GET /exam/hello": func(sessInfo vo.SessionInfo) (interface{}, error) {
+		"GET /exam/hello": func(sessInfo webfw.SessionInfo) (interface{}, error) {
 			return srv.SayHello(sessInfo)
 		},
 
@@ -39,13 +47,19 @@ func Controller() map[string]interface{} {
 		},
 
 		"/exam/ioreader": func(r io.ReadCloser) (interface{}, error) {
-			fmt.Printf("%v", r)
-			return nil, nil
+			defer r.Close()
+			b, err := io.ReadAll(r)
+			fmt.Printf("%s", b)
+			return nil, err
 		},
 
 		"/exam/multipart": func(r *multipart.Form) (interface{}, error) {
 			fmt.Printf("%v", r)
 			return nil, nil
 		},
+	}
+
+	for p, h := range m {
+		controllers[p] = h
 	}
 }

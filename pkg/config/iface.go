@@ -1,10 +1,6 @@
 package config
 
 import (
-	"fmt"
-	"github.com/geoffomen/go-app/pkg/config/mapimp"
-	"github.com/geoffomen/go-app/pkg/config/viperimp"
-	"sync"
 	"time"
 )
 
@@ -39,34 +35,12 @@ type Iface interface {
 }
 
 var (
-	once     sync.Once
-	ins      Iface
-	isInited bool = false
+	ins Iface
 )
 
-// New
-func New(profile string) Iface {
-	once.Do(func() {
-		if isInited {
-			return
-		}
-		service, err := viperimp.New(profile)
-		if err != nil {
-			panic(fmt.Sprintf("failed to initrialize config component, err: %v", err))
-		}
-		ins = service
-		isInited = true
-	})
-	return ins
-}
-
-// NewEmpty
-func NewEmpty() Iface {
-	service, err := mapimp.New()
-	if err != nil {
-		panic(fmt.Sprintf("failed to initrialize config component, err: %v", err))
-	}
-	return service
+// SetInstance
+func SetInstance(i Iface) {
+	ins = i
 }
 
 // GetInstance ..

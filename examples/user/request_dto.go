@@ -2,9 +2,11 @@ package user
 
 import (
 	"fmt"
-	vo2 "github.com/geoffomen/go-app/pkg/vo"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/geoffomen/go-app/pkg/database"
+	"github.com/geoffomen/go-app/pkg/webfw"
 )
 
 type CreateUserRequestDto struct {
@@ -44,15 +46,15 @@ func (s GetUserInfoRequestDto) Validate() ([]string, error) {
 }
 
 type PageRequestDto struct {
-	*vo2.PageRequestDto
+	*webfw.PageRequestDto
 	K3      *int   `json:"k3"`
 	Keyword string `json:"keyword"`
 	S1      struct {
 		K1 int  `json:"k1"`
 		K2 *int `json:"k2"`
 	} `json:"s1"`
-	Tm vo2.Mytime `json:"tm"`
-	Sl []int      `json:"sl"`
+	Tm database.Mytime `json:"tm"`
+	Sl []int           `json:"sl"`
 }
 
 func (s PageRequestDto) Validate() ([]string, error) {

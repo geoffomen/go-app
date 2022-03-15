@@ -1,7 +1,7 @@
 # 开发环境
 server:
     port: 8000
-    secret: exam-cnisgreat
+    jwtSecret: exam-cnisgreat
     noNeedAuthPath: [
         "/exam/",
     ]

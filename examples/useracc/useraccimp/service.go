@@ -1,4 +1,4 @@
-package accountimp
+package useraccimp
 
 import (
 	"net/http"
@@ -8,11 +8,11 @@ import (
 	"github.com/geoffomen/go-app/pkg/database"
 	"github.com/geoffomen/go-app/pkg/digestutil"
 	"github.com/geoffomen/go-app/pkg/myerr"
-	"github.com/geoffomen/go-app/pkg/vo"
+	"github.com/geoffomen/go-app/pkg/webfw"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/geoffomen/go-app/examples/account"
 	"github.com/geoffomen/go-app/examples/user"
+	"github.com/geoffomen/go-app/examples/useracc"
 )
 
 // Service ...
@@ -45,25 +45,24 @@ func GetInstance() *Service {
 }
 
 // NewInstanceWithDBClient ..
-func (srv Service) NewWithDb(cl *database.Client) account.Iface {
+func (srv Service) NewWithDb(cl *database.Client) useracc.Iface {
 	newSrv := *instance
 	newSrv.db = cl
 	return &newSrv
 }
 
-func (srv *Service) Register(param account.CreateRequestDto) (int, error) {
+func (srv *Service) Register(param useracc.CreateRequestDto) (int, error) {
 	salt := digestutil.GenUuid()
 	pass := digestutil.Md5Encryption(param.Password, salt)
 
 	accountEntity := AccountEntity{
-		BaseEntity: vo.BaseEntity{
-			CreatedTime: vo.Mytime{
+		BaseEntity: database.BaseEntity{
+			CreatedTime: database.Mytime{
 				Time: time.Now(),
 			},
-			UpdatedTime: vo.Mytime{
+			UpdatedTime: database.Mytime{
 				Time: time.Now(),
 			},
-			Version: 0,
 		},
 		Account:  param.Account,
 		Password: pass,
@@ -100,7 +99,7 @@ func (srv Service) CreateToken(uid int) (string, error) {
 	atClaims["uid"] = uid
 	atClaims["issueAt"] = time.Now()
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
-	tokenString, err := at.SignedString([]byte(srv.config.GetStringOrDefault("server.secret", "")))
+	tokenString, err := at.SignedString([]byte(srv.config.GetStringOrDefault("server.jwtSecret", "")))
 	if err != nil {
 		return "", myerr.New(err)
 	}
@@ -109,13 +108,13 @@ func (srv Service) CreateToken(uid int) (string, error) {
 }
 
 // ValidAndGetTokenData ..
-func (srv Service) ValidAndGetTokenData(tokenString string) (*vo.SessionInfo, error) {
+func (srv Service) ValidAndGetTokenData(tokenString string) (*webfw.SessionInfo, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, myerr.NewfWithCode(http.StatusUnauthorized, "Unexpected signing method: %v", token.Method).
 				AddMsgf("令牌无效，请重新登录")
 		}
-		return []byte(srv.config.GetStringOrDefault("server.secret", "")), nil
+		return []byte(srv.config.GetStringOrDefault("server.jwtSecret", "")), nil
 	})
 	if err != nil {
 		return nil, myerr.NewfWithCode(http.StatusUnauthorized, err.Error()).AddMsgf("令牌无效，请重新登录")
@@ -134,7 +133,7 @@ func (srv Service) ValidAndGetTokenData(tokenString string) (*vo.SessionInfo, er
 		if loginToken.ExpireAt < time.Now().Unix() {
 			return nil, myerr.NewfWithCode(http.StatusUnauthorized, "令牌已失效，请重新登录")
 		}
-		return &vo.SessionInfo{
+		return &webfw.SessionInfo{
 			Uid:           uid,
 			Token:         tokenString,
 			TokenExpireAt: loginToken.ExpireAt,
@@ -144,7 +143,7 @@ func (srv Service) ValidAndGetTokenData(tokenString string) (*vo.SessionInfo, er
 }
 
 // Login ...
-func (srv Service) Login(param account.LoginRequestDto) (*account.LoginResponseDto, error) {
+func (srv Service) Login(param useracc.LoginRequestDto) (*useracc.LoginResponseDto, error) {
 	accEntity := AccountEntity{}
 	err := srv.db.GetStmt().
 		Table(accEntity.TableName()).
@@ -173,14 +172,13 @@ func (srv Service) Login(param account.LoginRequestDto) (*account.LoginResponseD
 		return nil, myerr.New(err)
 	}
 	loginToken := LoginTokenEntity{
-		BaseEntity: vo.BaseEntity{
-			CreatedTime: vo.Mytime{
+		BaseEntity: database.BaseEntity{
+			CreatedTime: database.Mytime{
 				Time: time.Now(),
 			},
-			UpdatedTime: vo.Mytime{
+			UpdatedTime: database.Mytime{
 				Time: time.Now(),
 			},
-			Version: 0,
 		},
 		UID:      accEntity.Uid,
 		Token:    tokenString,
@@ -193,10 +191,10 @@ func (srv Service) Login(param account.LoginRequestDto) (*account.LoginResponseD
 		return nil, myerr.New(err)
 	}
 
-	rt := account.LoginResponseDto{
+	rt := useracc.LoginResponseDto{
 		Uid:         userInfo.Id,
-		IssueAt:     vo.Mytime{Time: time.Now()},
-		ExpireAt:    vo.Mytime{Time: time.Unix(loginToken.ExpireAt, 0)},
+		IssueAt:     database.Mytime{Time: time.Now()},
+		ExpireAt:    database.Mytime{Time: time.Unix(loginToken.ExpireAt, 0)},
 		TokenType:   "Bearer",
 		AccessToken: tokenString,
 	}
@@ -204,7 +202,7 @@ func (srv Service) Login(param account.LoginRequestDto) (*account.LoginResponseD
 }
 
 // Logout ..
-func (srv *Service) Logout(sessData vo.SessionInfo) (int, error) {
+func (srv *Service) Logout(sessData webfw.SessionInfo) (int, error) {
 	err := srv.db.GetStmt().
 		Where("token = ?", sessData.Token).
 		Delete(&LoginTokenEntity{})

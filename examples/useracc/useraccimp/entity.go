@@ -1,12 +1,10 @@
-package accountimp
+package useraccimp
 
-import (
-	"github.com/geoffomen/go-app/pkg/vo"
-)
+import "github.com/geoffomen/go-app/pkg/database"
 
 // AccountEntity 登录帐号
 type AccountEntity struct {
-	vo.BaseEntity // 基础字段
+	database.BaseEntity // 基础字段
 	Account       string
 	Password      string
 	Salt          string
@@ -16,12 +14,12 @@ type AccountEntity struct {
 
 // TableName 表名
 func (e AccountEntity) TableName() string {
-	return "account_info"
+	return "user_account"
 }
 
 // LoginTokenEntity 已登录信息
 type LoginTokenEntity struct {
-	vo.BaseEntity // 基础字段
+	database.BaseEntity // 基础字段
 	UID           int
 	Token         string
 	ExpireAt      int64

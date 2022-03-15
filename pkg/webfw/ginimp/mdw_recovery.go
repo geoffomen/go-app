@@ -15,7 +15,7 @@ func recovery() gin.HandlerFunc {
 				args, exists := c.Get("args")
 				if exists {
 					ags := args.([]reflect.Value)
-					lgg.Errorf("method: %s, path: %s, msg: %s, args: %s, stack: %s",
+					log.Errorf("method: %s, path: %s, msg: %s, args: %s, stack: %s",
 						method,
 						path,
 						err,
@@ -23,7 +23,7 @@ func recovery() gin.HandlerFunc {
 						stack(3),
 					)
 				} else {
-					lgg.Errorf("method: %s, path: %s, msg: %s, stack: %s",
+					log.Errorf("method: %s, path: %s, msg: %s, stack: %s",
 						method,
 						path,
 						err,
