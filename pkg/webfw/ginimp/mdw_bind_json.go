@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+	middleWares = append(middleWares, bindJson())
+}
+
 func bindJson() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if strings.Contains(c.GetHeader("Content-Type"), "application/json") {

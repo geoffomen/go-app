@@ -9,6 +9,10 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+func init() {
+	middleWares = append(middleWares, bindMutipartFormData())
+}
+
 func bindMutipartFormData() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if strings.Contains(c.GetHeader("Content-Type"), "multipart/form-data") {

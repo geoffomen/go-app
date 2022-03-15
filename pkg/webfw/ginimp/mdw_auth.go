@@ -9,6 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+	middleWares = append(middleWares, authorization())
+}
+
 func authorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		needAuth := true

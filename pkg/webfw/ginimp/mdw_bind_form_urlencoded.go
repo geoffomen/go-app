@@ -9,6 +9,10 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+func init() {
+	middleWares = append(middleWares, bindFromUrlencoded())
+}
+
 func bindFromUrlencoded() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if strings.Contains(c.GetHeader("Content-Type"), "application/x-www-form-urlencoded") {

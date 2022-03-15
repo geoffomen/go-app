@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+func init() {
+	middleWares = append(middleWares, bindQuery())
+}
+
 func bindQuery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if len(c.Request.URL.RawQuery) > 0 {

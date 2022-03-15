@@ -8,6 +8,10 @@ import (
 	// cors "github.com/rs/cors/wrapper/gin"
 )
 
+func init() {
+	middleWares = append(middleWares, enableCors())
+}
+
 func enableCors() gin.HandlerFunc {
 	op := cors.Options{
 		AllowedOrigins: []string{"*"},

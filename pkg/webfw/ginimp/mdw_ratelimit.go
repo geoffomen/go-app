@@ -8,6 +8,10 @@ import (
 	"github.com/juju/ratelimit"
 )
 
+func init() {
+	middleWares = append(middleWares, rateLimit())
+}
+
 func rateLimit() gin.HandlerFunc {
 	bk := ratelimit.NewBucket(100, 500)
 	return func(c *gin.Context) {

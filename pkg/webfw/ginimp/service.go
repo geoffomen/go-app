@@ -7,15 +7,17 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"github.com/storm-5/go-app/pkg/config"
 	"github.com/storm-5/go-app/pkg/webfw"
-	"github.com/gin-gonic/gin"
 )
 
 // Gin ...
 type Gin struct {
 	engine *gin.Engine
 }
+
+var middleWares []gin.HandlerFunc
 
 type GinLogger interface {
 	Debugf(format string, args ...interface{})
@@ -28,7 +30,7 @@ var (
 	pathToHandler = make(map[string]interface{})
 	pathToMethod  = make(map[string][]string)
 	log           GinLogger
-	conf   config.Iface
+	conf          config.Iface
 )
 
 // NewGin ..
@@ -43,14 +45,10 @@ func New(cf config.Iface, lg GinLogger) (*Gin, error) {
 	engine.Use(recovery())
 	engine.Use(logger())
 	engine.Use(responseHandler())
-	engine.Use(httpMethodValidator())
-	engine.Use(rateLimit())
-	engine.Use(enableCors())
-	engine.Use(authorization())
-	engine.Use(bindQuery())
-	engine.Use(bindJson())
-	engine.Use(bindMutipartFormData())
-	engine.Use(bindFromUrlencoded())
+
+	for _, item := range middleWares {
+		engine.Use(item)
+	}
 
 	return &Gin{
 		engine: engine,

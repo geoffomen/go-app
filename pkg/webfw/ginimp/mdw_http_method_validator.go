@@ -6,6 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+	middleWares = append(middleWares, httpMethodValidator())
+}
+
 func httpMethodValidator() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		methods, ok := pathToMethod[c.Request.URL.Path]
