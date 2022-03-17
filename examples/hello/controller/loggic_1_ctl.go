@@ -2,8 +2,6 @@ package controller
 
 import (
 	"fmt"
-	"io"
-	"mime/multipart"
 	"net/http"
 
 	"github.com/storm-5/go-app/pkg/database"
@@ -37,24 +35,8 @@ func init() {
 			return srv.Echo(args)
 		},
 
-		"/exam/error": func() (interface{}, error) {
-			return srv.Error()
-		},
-
 		"/exam/req-rsp": func(req http.Request, rsp http.ResponseWriter) (interface{}, error) {
 			fmt.Printf("%v %v", req, rsp)
-			return nil, nil
-		},
-
-		"/exam/ioreader": func(r io.ReadCloser) (interface{}, error) {
-			defer r.Close()
-			b, err := io.ReadAll(r)
-			fmt.Printf("%s", b)
-			return nil, err
-		},
-
-		"/exam/multipart": func(r *multipart.Form) (interface{}, error) {
-			fmt.Printf("%v", r)
 			return nil, nil
 		},
 	}

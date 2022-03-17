@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/storm-5/go-app/pkg/database"
-	"github.com/storm-5/go-app/pkg/myerr"
 	"github.com/storm-5/go-app/pkg/webfw"
 
 	"github.com/storm-5/go-app/examples/hello"
@@ -49,14 +48,4 @@ func (srv *Service) Echo(args hello.EchoReqDto) (hello.EchoRspDto, error) {
 	rsp.StructVal.Id = args.StructVal.Id
 	rsp.SliceVal = args.SliceVal
 	return rsp, nil
-}
-
-func (srv *Service) Error() (string, error) {
-	err := func() error {
-		err := myerr.New(fmt.Errorf("first")).AddMsgf("second")
-		return err
-	}()
-	myerr.New(err).AddMsgf("third").AddMsgf("%s", "fourth").SetCode(500)
-
-	return "", err
 }
