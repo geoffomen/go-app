@@ -1,38 +1,37 @@
 # note: call scripts from /scripts
 
+.PHONY: app \
+	clean \
+	container \
+	container-clean \
+	container-run \
+	container-stop
+
 help:
-	@echo "run 'make myapp' to build"
-	@echo "run 'make clean' to clean"
+	@echo "run 'make app args_appname={应用名称}' to build"
+	@echo "run 'make clean args_appname={应用名称}' to clean"
+	@echo "run 'make container args_appname={应用名称}' to build docker image"
+	@echo "run 'make container-clean args_appname={应用名称}' to delete docker image"
+	@echo "run 'make container-run args_appname={应用名称}' to run docker container"
+	@echo "run 'make container-stop args_appname={应用名称}' to stop docker container"
 
-myapp:
-	@sh scripts/build.sh myapp
+app:
+	@sh scripts/build.sh ${args_appname}
 
-myapp-clean:
-	@sh scripts/clean.sh myapp
+app-with-docker:
+	@sh scripts/build-with-docker.sh ${args_appname}
 
-myapp-pod:
-	@sh scripts/pod_create.sh pod_myapp
+clean:
+	@sh scripts/clean.sh ${args_appname}
 
-myapp-pod-clean:
-	@sh scripts/pod_clean.sh pod_myapp
-	
-myapp-container:
-	@sh scripts/container-build.sh myapp build/package/Dockerfile_myapp
+container:
+	@sh scripts/container-build.sh ${args_appname} 
 
-myapp-container-run: myapp-container myapp-pod myapp-db-container-run
-	@sh scripts/container-run.sh pod_myapp myapp
+container-clean: container-stop
+	@sh scripts/container-clean.sh ${args_appname}
 
-myapp-container-clean: 
-	@sh scripts/container-clean.sh myapp
+container-run: container
+	@sh scripts/container-run.sh ${args_appname}
 
-myapp-db-container-run: 
-	@sh scripts/mysql-container-run.sh pod_myapp password /tmp/mysql_data
-
-myapp-db-container-clean: 
-	@sh scripts/container-clean.sh mysql
-
-myapp-db-container-data-import: 
-	@sh scripts/mysql-import.sh password ./docs/myapp.sql
-
-myapp-db-container-data-export: 
-	@sh scripts/mysql-export.sh password myapp /tmp/myapp_database_dump.sql
+container-stop:
+	@sh scripts/container-stop.sh ${args_appname}

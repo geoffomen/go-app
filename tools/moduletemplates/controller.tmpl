@@ -1,29 +1,17 @@
 package {{.ModuleName}}ctl
 
 import (
-	"{{.GroupId}}/{{.ArtifactId}}/pkg/database"
-	"{{.GroupId}}/{{.ArtifactId}}/pkg/webfw"
-	"{{.GroupId}}/{{.ArtifactId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}imp"
+	"{{.GroupId}}/internal/app/common/base/vo"
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}srv"
 )
 
-var (
-	controllers map[string]interface{} = make(map[string]interface{})
-	srv         *{{.ModuleName}}imp.Service
-)
-
-// Controller ..
-func Controller() map[string]interface{} {
-	srv = {{.ModuleName}}imp.New(
-		database.GetClient(),
-	)
-	return controllers
-}
 
 func init() {
 	m := map[string]interface{}{
 
-		"GET /api/v1/feature": func(sessInfo webfw.SessionInfo) (interface{}, error) {
-			return nil, nil
+		// 例子。fix me!
+		"GET /{{.AppName}}/api/v1/{{.ModuleName}}/page": func(ctx vo.SessionInfo, arg {{.ModuleName}}srv.PageRequestDto) (interface{}, error) {
+			return srv.Page(ctx, arg)
 		},
 	}
 

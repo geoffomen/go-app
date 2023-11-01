@@ -1,1 +1,60 @@
-package {{.ModuleName}}
+package {{.ModuleName}}srv
+
+
+import (
+	"encoding/json"
+	"fmt"
+	"strings"
+	"unicode/utf8"
+
+	"{{.GroupId}}/internal/app/common/base/vo"
+)
+
+
+type PageRequestDto struct {
+	vo.PageRequestDto 
+	Keyword string        `json:"keyword"`
+}
+
+func (r PageRequestDto) Validate() ([]string, error) {
+	rt := make([]string, 0)
+	n := strings.TrimSpace(r.Keyword)
+	if utf8.RuneCountInString(n) <= 0 || utf8.RuneCountInString(n) > 50 {
+		rt = append(rt, "Keyword: 长度不能小于0或大于50")
+	}
+
+	if len(rt) > 0 {
+		return rt, fmt.Errorf("校验失败")
+	}
+	return rt, nil
+}
+
+// UnmarshalJSON ..
+func (p *PageRequestDto) UnmarshalJSON(b []byte) error {
+	var objmap map[string]json.RawMessage
+	err := json.Unmarshal(b, &objmap)
+	if err != nil {
+		return fmt.Errorf("原因：%s, 参数: %s", err, string(b))
+	}
+	errMsgs := make([]string, 0)
+	if v, ok := objmap["keyword"]; ok {
+		err = json.Unmarshal(v, &(p.Keyword))
+		if err != nil {
+			errMsgs = append(errMsgs, fmt.Sprintf("原因：%s", err))
+		}
+	}
+
+	err = p.PageRequestDto.UnmarshalJSON(b)
+	if err != nil {
+		errMsgs = append(errMsgs, err.Error())
+	}
+
+	if len(errMsgs) > 0 {
+		newErrMsg := make([]string, 0, len(errMsgs)+1)
+		newErrMsg = append(newErrMsg, fmt.Sprintf("绑定参数时发生错误，参数: %s\n", string(b)))
+		newErrMsg = append(newErrMsg, errMsgs...)
+		return fmt.Errorf(strings.Join(newErrMsg, ";"))
+	} else {
+		return nil
+	}
+}

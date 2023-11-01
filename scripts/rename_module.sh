@@ -1,8 +1,8 @@
 #!/bin/sh
 
 GO=`which go`
-OLD_MODULE=github.com/geoffomen
-NEW_MODULE=github.com/storm-5
+OLD_MODULE=example.com
+NEW_MODULE=example.com
 
 # edit module name
 ${GO} mod edit -module ${NEW_MODULE}

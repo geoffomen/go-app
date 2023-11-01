@@ -1,0 +1,16 @@
+package {{.ModuleName}}srv
+
+import (
+	"{{.GroupId}}/internal/app/common/base/entity"
+)
+
+
+// {{.ModuleName}}Entity ..
+type {{.ModuleName}}Entity struct {
+	entity.BaseEntity // 基础字段
+}
+
+// TableName 表名
+func (e {{.ModuleName}}Entity) TableName() string {
+	return "{{.ModuleName}}"
+}

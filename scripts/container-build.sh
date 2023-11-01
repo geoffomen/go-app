@@ -4,22 +4,22 @@
 set -e
 
 
-CONTAIN_NAME=${1}
-DOCKER_FILE=${2}
+IMAGE_NAME=${1}
+DOCKER_FILE=build/container/example/Dockerfile
 
 
-echo "building container ${CONTAIN_NAME}"
+echo "building image ${IMAGE_NAME}"
 
-if [ $(podman images -a | grep localhost/${CONTAIN_NAME} | wc -l) -gt 0 ]
+if [ $(docker images -a | grep ${IMAGE_NAME} | wc -l) -gt 0 ]
 then
-	echo "already exist."
-	exit 0
+	echo "already exist. delete it"
+	CMD=$(echo "docker rmi ${IMAGE_NAME}")
+	echo ${CMD}
+	eval ${CMD}
 fi 
 
-CMD=$(echo "podman build -t ${CONTAIN_NAME} -f ${DOCKER_FILE} .")
-
+CMD=$(echo "docker build --build-arg APP_NAME=${IMAGE_NAME} -t ${IMAGE_NAME} -f ${DOCKER_FILE} .")
 echo ${CMD}
-
 eval ${CMD}
 
 echo "done"

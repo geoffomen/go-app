@@ -1,0 +1,32 @@
+package {{.ModuleName}}srv
+
+import (
+	"{{.GroupId}}/internal/pkg/myconfig"
+	"{{.GroupId}}/internal/pkg/mylog"
+)
+
+type Service struct {
+	config   myconfig.MyConfigIface
+	logger mylog.MyLogIface
+	repo   {{.ModuleName}}Repo
+}
+
+var instance *Service = &Service{}
+
+// New ...
+func New(config myconfig.MyConfigIface,
+	logger mylog.MyLogIface,
+	repo {{.ModuleName}}Repo,
+) *Service {
+	*instance = Service{
+		config: config,
+		logger: logger,
+		repo: repo,
+	}
+	return instance
+}
+
+// GetInstance ..
+func GetInstance() *Service {
+	return instance
+}

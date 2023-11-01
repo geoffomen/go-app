@@ -4,26 +4,27 @@
 set -e
 
 
-POD_NAME=${1}
-CONTAINER_NAME=${2}
+echo "starting container..."
+APP_NAME=${1}
 
 
-echo "starting container ${CONTAINER_NAME}"
+TARGET_DIR=/tmp/test_$(date +'%Y-%m-%d')
 
-if [ $(podman ps -a -f pod=${POD_NAME} | grep ${CONTAINER_NAME} | wc -l) -gt 0 ]
-then
-	echo "stopping preexist container..."
-	echo "podman stop ${CONTAINER_NAME} && podman rm ${CONTAINER_NAME}"
-	eval ${CMD}
+if [ ! -d ${TARGET_DIR} ]; then 
+    mkdir ${TARGET_DIR}
 fi 
 
-CMD=$(echo "podman run -d \
-	--pod ${POD_NAME} \
-	--name ${CONTAINER_NAME} \
-	localhost/${CONTAINER_NAME}:latest")
+cd ${TARGET_DIR}
+echo "working dir: $(pwd)"
 
+# 初始化工作目录
+CMD=$(echo "docker run --rm -v $(pwd):/workspace ${APP_NAME}")
 echo ${CMD}
+eval ${CMD}
 
+# 运行
+CMD=$(echo "docker compose -f deployments/container/compose.yml up -d")
+echo ${CMD}
 eval ${CMD}
 
 echo "done"

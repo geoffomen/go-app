@@ -1,34 +1,32 @@
-package {{.ModuleName}}imp
+package {{.ModuleName}}srv
 
 import (
-	"{{.GroupId}}/{{.ArtifactId}}/pkg/database"
-	"{{.GroupId}}/{{.ArtifactId}}/internal/app/{{.AppName}}/{{.ModuleName}}"
+	"context"
+	"fmt"
+	"net/http"
+	"time"
+
+	"{{.GroupId}}/internal/app/common/base/vo"
+	"{{.GroupId}}/internal/pkg/myerr/myerrimp"
 )
 
-type Service struct {
-	db *database.Client
-}
 
-var instance *Service = &Service{}
-
-// New ...
-func New(db *database.Client,
-) *Service {
-	*instance = Service{
-		db: db,
+// Page 返回分页数据。fix me!
+func (srv *Service) Page(ctx vo.SessionInfo, arg PageRequestDto) (*vo.PageResponseDto, error) {
+	msg, err := arg.Validate()
+	if err != nil {
+		return nil, myerrimp.New(err).SetCode(http.StatusBadRequest).AddMsgf("%s", msg)
 	}
-	return instance
-}
 
-// GetInstance ..
-func GetInstance() *Service {
-	return instance
-}
-
-// NewWithDBClient ..
-func (srv *Service) NewWithDb(db *database.Client) {{.ModuleName}}.Iface {
-	newSrv := *instance
-	newSrv.db = db
-	return &newSrv
+	entities, total, err := srv.repo.SelectPage(*ctx.SetContext(context.Background()), []string{"1=1", fmt.Sprintf("deleted_time < '%s'", time.UnixMilli(0))}, "", 0, 100)
+	if err != nil {
+		return nil, myerrimp.New(err)
+	}
+	
+	return &vo.PageResponseDto{
+		Total:    total,
+		PageSize: len(entities),
+		List:     entities,
+	}, nil
 }
 
