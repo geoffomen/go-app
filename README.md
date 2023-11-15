@@ -40,17 +40,17 @@
 - 根据提示，输入应用名称，例如：example，按回车确认
 - 根据提示，输入模块名称，例如：test, 按回车确认
 - 程序会在`internal/app/{应用名称}/{模块名称}`生成模块相关文件。可按需修改`tools/gen_module_files.go`和`tools/moduletemplates/`下的文件来控制生成的文件
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/service_base.go`文件接收所依赖的接口的具体实现的注入
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/service.go`文件实现业务逻辑
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/entity.go`文件定义业务实体
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/req_dto.go`文件定义请求DTO
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/rsp_dto.go`文件定义响应DTO
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/vo.go`文件定义值对象
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/dependence_ifce.go`文件按需定义依赖的接口以及一些常量
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}dm/entity.go`文件定义业务实体
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}dm/req_dto.go`文件定义请求DTO
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}dm/rsp_dto.go`文件定义响应DTO
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}dm/vo.go`文件定义值对象
 - 在`internal/app/{应用名称}/{模块名称}/{模块名称}repo/repo.go`文件定义数据的存储操作
 - 在`internal/app/{应用名称}/{模块名称}/{模块名称}repo/dependence_iface.go`文件按需定义数据的存储操作所依赖的接口以及一些常量
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}ad/{模块名称}http/controller_base.go`文件注入依赖
-- 在`internal/app/{应用名称}/{模块名称}/{模块名称}ad/{模块名称}http/controller.go`文件定义路由
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/service_base.go`文件接收所依赖的接口的具体实现的注入
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/service.go`文件实现业务逻辑
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}srv/dependence_ifce.go`文件按需定义依赖的接口以及一些常量
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}ctl/controller_base.go`文件注入依赖
+- 在`internal/app/{应用名称}/{模块名称}/{模块名称}ctl/controller.go`文件定义路由
 - 在`cmd/{应用名称}/main.go`文件向协议处理框架(如http)注册路由
 - 完成。可参考`internal/app/example/`下面的例子
 - 如果单文件下代码量多，建议拆分成多个逻辑相关的小文件，方便导航。
