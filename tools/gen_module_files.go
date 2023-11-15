@@ -56,8 +56,9 @@ func main() {
 
 	subdirs = []string{
 		fmt.Sprintf("%s/%sctl", moduleDir, values.ModuleName),
-		fmt.Sprintf("%s/%srepo", moduleDir, values.ModuleName),
 		fmt.Sprintf("%s/%ssrv", moduleDir, values.ModuleName),
+		fmt.Sprintf("%s/%srepo", moduleDir, values.ModuleName),
+		fmt.Sprintf("%s/%sdm", moduleDir, values.ModuleName),
 	}
 
 	for _, dirname := range subdirs {
@@ -78,15 +79,15 @@ func main() {
 		"README.tmpl":                   fmt.Sprintf("%s/README.md", moduleDir),
 		"controller_base.tmpl":          fmt.Sprintf("%s/%sctl/controller_base.go", moduleDir, values.ModuleName),
 		"controller.tmpl":               fmt.Sprintf("%s/%sctl/controller.go", moduleDir, values.ModuleName),
-		"req_dto.tmpl":                  fmt.Sprintf("%s/%ssrv/req_dto.go", moduleDir, values.ModuleName),
-		"rsp_dto.tmpl":                  fmt.Sprintf("%s/%ssrv/rsp_dto.go", moduleDir, values.ModuleName),
 		"dependence_iface_service.tmpl": fmt.Sprintf("%s/%ssrv/dependence_iface.go", moduleDir, values.ModuleName),
-		"vo.tmpl":                       fmt.Sprintf("%s/%ssrv/vo.go", moduleDir, values.ModuleName),
-		"entity.tmpl":                   fmt.Sprintf("%s/%ssrv/entity.go", moduleDir, values.ModuleName),
 		"service_base.tmpl":             fmt.Sprintf("%s/%ssrv/service_base.go", moduleDir, values.ModuleName),
 		"service.tmpl":                  fmt.Sprintf("%s/%ssrv/service.go", moduleDir, values.ModuleName),
 		"repo.tmpl":                     fmt.Sprintf("%s/%srepo/repo.go", moduleDir, values.ModuleName),
 		"dependence_iface_repo.tmpl":    fmt.Sprintf("%s/%srepo/dependence_iface.go", moduleDir, values.ModuleName),
+		"req_dto.tmpl":                  fmt.Sprintf("%s/%sdm/req_dto.go", moduleDir, values.ModuleName),
+		"rsp_dto.tmpl":                  fmt.Sprintf("%s/%sdm/rsp_dto.go", moduleDir, values.ModuleName),
+		"vo.tmpl":                       fmt.Sprintf("%s/%sdm/vo.go", moduleDir, values.ModuleName),
+		"entity.tmpl":                   fmt.Sprintf("%s/%sdm/entity.go", moduleDir, values.ModuleName),
 	}
 
 	for templateName, outputPath := range rootFsMapping {

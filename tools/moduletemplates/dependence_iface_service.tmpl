@@ -3,12 +3,13 @@ package {{.ModuleName}}srv
 
 import (
 	"{{.GroupId}}/internal/app/common/base/vo"
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}dm"
 )
 
 type {{.ModuleName}}Repo interface {
-    Create(ctx vo.SessionInfo, e {{.ModuleName}}Entity) (insertedRecordId int64, err error)
+    Create(ctx vo.SessionInfo, e {{.ModuleName}}dm.{{.ModuleName}}Entity) (insertedRecordId int64, err error)
 	LogicalDeleteById(ctx vo.SessionInfo, id int64) error
-	UpdateById(ctx vo.SessionInfo, e {{.ModuleName}}Entity) error
-	SelectById(ctx vo.SessionInfo, id int64) (dst *{{.ModuleName}}Entity, err error)
-	SelectPage(ctx vo.SessionInfo, condetions []string, orderBy string, offset int64, limit int64) ([]{{.ModuleName}}Entity, int64, error)
+	UpdateById(ctx vo.SessionInfo, e {{.ModuleName}}dm.{{.ModuleName}}Entity) error
+	SelectById(ctx vo.SessionInfo, id int64) (dst *{{.ModuleName}}dm.{{.ModuleName}}Entity, err error)
+	SelectPage(ctx vo.SessionInfo, condetions []string, orderBy string, offset int64, limit int64) ([]{{.ModuleName}}dm.{{.ModuleName}}Entity, int64, error)
 }

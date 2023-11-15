@@ -8,11 +8,12 @@ import (
 
 	"{{.GroupId}}/internal/app/common/base/vo"
 	"{{.GroupId}}/internal/pkg/myerr/myerrimp"
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}dm"
 )
 
 
 // Page 返回分页数据。fix me!
-func (srv *Service) Page(ctx vo.SessionInfo, arg PageRequestDto) (*vo.PageResponseDto, error) {
+func (srv *Service) Page(ctx vo.SessionInfo, arg {{.ModuleName}}dm.PageRequestDto) (*vo.PageResponseDto, error) {
 	msg, err := arg.Validate()
 	if err != nil {
 		return nil, myerrimp.New(err).SetCode(http.StatusBadRequest).AddMsgf("%s", msg)

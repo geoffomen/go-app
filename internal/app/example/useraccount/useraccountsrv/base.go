@@ -7,9 +7,10 @@ import (
 
 // Service ...
 type Service struct {
-	config myconfig.MyConfigIface
-	logger mylog.MyLogIface
-	repo   useraccountRepo
+	config      myconfig.MyConfigIface
+	logger      mylog.MyLogIface
+	repo        useraccountRepo
+	echoargssrv ecoArgsSrvIface
 }
 
 var instance *Service = &Service{}
@@ -19,11 +20,13 @@ func New(
 	config myconfig.MyConfigIface,
 	logger mylog.MyLogIface,
 	repo useraccountRepo,
+	echoargssrv ecoArgsSrvIface,
 ) *Service {
 	*instance = Service{
-		config: config,
-		logger: logger,
-		repo:   repo,
+		config:      config,
+		logger:      logger,
+		repo:        repo,
+		echoargssrv: echoargssrv,
 	}
 	return instance
 }

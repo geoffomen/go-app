@@ -1,4 +1,4 @@
-package useraccountsrv
+package useraccountdm
 
 import (
 	"example.com/internal/app/common/base/entity"

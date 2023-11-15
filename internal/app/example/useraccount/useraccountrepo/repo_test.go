@@ -11,8 +11,8 @@ import (
 
 	"example.com/internal/app/common/base/entity"
 	"example.com/internal/app/common/base/vo"
+	"example.com/internal/app/example/useraccount/useraccountdm"
 	"example.com/internal/app/example/useraccount/useraccountrepo"
-	"example.com/internal/app/example/useraccount/useraccountsrv"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/assert"
 )
@@ -71,7 +71,7 @@ func TestCreate(t *testing.T) {
 	db := openDb()
 	repo := useraccountrepo.New(db, &mylogger{})
 	id, err := repo.Create(vo.SessionInfo{Ctx: context.Background()},
-		useraccountsrv.UseraccountEntity{
+		useraccountdm.UseraccountEntity{
 			Account:  "account1",
 			Password: "123456",
 			Salt:     "",

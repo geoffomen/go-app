@@ -1,4 +1,4 @@
-package echoargssrv
+package echoargsdm
 
 import (
 	"fmt"

@@ -8,32 +8,34 @@ import (
 	"strings"
 
 	"example.com/internal/app/common/base/vo"
+	"example.com/internal/app/example/echoargs/echoargsdm"
 	"example.com/internal/app/example/echoargs/echoargssrv"
+	"example.com/internal/app/example/useraccount/useraccountsrv"
 	"example.com/internal/pkg/myconfig"
 	"example.com/internal/pkg/mylog"
 )
 
 func New(config myconfig.MyConfigIface, logger mylog.MyLogIface, db *sql.DB) map[string]interface{} {
-	srv := echoargssrv.New(config, logger)
+	srv := echoargssrv.New(config, logger, useraccountsrv.GetInstance())
 	return map[string]interface{}{
-		"GET /example/api/v1/echoargs/echo_query": func(ctx vo.SessionInfo, args echoargssrv.EhcoReqDto) (interface{}, error) {
+		"GET /example/api/v1/echoargs/echo_query": func(ctx vo.SessionInfo, args echoargsdm.EhcoReqDto) (interface{}, error) {
 			return srv.Echo(ctx, args)
 		},
 
-		"POST /example/api/v1/echoargs/echo_form": func(ctx vo.SessionInfo, args echoargssrv.EhcoReqDto) (interface{}, error) {
+		"POST /example/api/v1/echoargs/echo_form": func(ctx vo.SessionInfo, args echoargsdm.EhcoReqDto) (interface{}, error) {
 			return srv.Echo(ctx, args)
 		},
 
-		"POST /example/api/v1/echoargs/echo_multipart_form": func(ctx vo.SessionInfo, args echoargssrv.EhcoReqDto) (interface{}, error) {
+		"POST /example/api/v1/echoargs/echo_multipart_form": func(ctx vo.SessionInfo, args echoargsdm.EhcoReqDto) (interface{}, error) {
 			return srv.Echo(ctx, args)
 		},
 
-		"POST /example/api/v1/echoargs/echo_json": func(ctx vo.SessionInfo, args echoargssrv.EhcoReqDto) (interface{}, error) {
+		"POST /example/api/v1/echoargs/echo_json": func(ctx vo.SessionInfo, args echoargsdm.EhcoReqDto) (interface{}, error) {
 			return srv.Echo(ctx, args)
 		},
 
 		"POST /example/api/v2/echoargs/echo_json": func(ctx vo.SessionInfo, w http.ResponseWriter, r *http.Request) (interface{}, error) {
-			arg := echoargssrv.EhcoReqDto{}
+			arg := echoargsdm.EhcoReqDto{}
 			if r.Body != nil {
 				defer r.Body.Close()
 				json.NewDecoder(r.Body).Decode(&arg)
@@ -57,7 +59,7 @@ func New(config myconfig.MyConfigIface, logger mylog.MyLogIface, db *sql.DB) map
 			sss := r.Form["ss"]
 			tms := r.Form["tm"]
 			vs := r.Form["v"]
-			
+
 			w.Header().Set("Content-Type", "text/plain; charset=utf-8;")
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "id: %s\n, f32: %s\n, f64: %s\n, email: %s\n, si: %s\n, sf32: %s\n, sf64: %s\n, ss: %s\n, tm: %s\n, v: %s\n",
@@ -79,7 +81,7 @@ func New(config myconfig.MyConfigIface, logger mylog.MyLogIface, db *sql.DB) map
 			sss := r.Form["ss"]
 			tms := r.Form["tm"]
 			vs := r.Form["v"]
-			
+
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "id: %s\n, f32: %s\n, f64: %s\n, email: %s\n, si: %s\n, sf32: %s\n, sf64: %s\n, ss: %s\n, tm: %s\n, v: %s\n",
@@ -101,7 +103,7 @@ func New(config myconfig.MyConfigIface, logger mylog.MyLogIface, db *sql.DB) map
 			sss := r.Form["ss"]
 			tms := r.Form["tm"]
 			vs := r.Form["v"]
-			
+
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "id: %s\n, f32: %s\n, f64: %s\n, email: %s\n, si: %s\n, sf32: %s\n, sf64: %s\n, ss: %s\n, tm: %s\n, v: %s\n",
@@ -110,7 +112,5 @@ func New(config myconfig.MyConfigIface, logger mylog.MyLogIface, db *sql.DB) map
 			)
 			return w, nil
 		},
-
-		
 	}
 }
