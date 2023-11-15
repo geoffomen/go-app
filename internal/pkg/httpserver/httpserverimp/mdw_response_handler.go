@@ -1,9 +1,12 @@
 package httpserverimp
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"time"
 
 	"example.com/internal/app/common/base/vo"
 )
@@ -25,6 +28,19 @@ func responseHandler() func(ctx *Ctx) error {
 			switch rt := responses[0].Interface().(type) {
 			case http.ResponseWriter:
 				// 在应用内已处理，这里不需重复处理
+			case *vo.FileContentRspDto:
+				return serveFileContent(ctx.responseWriter, ctx.request, rt.FileAbsPath)
+			case vo.FileContentRspDto:
+				return serveFileContent(ctx.responseWriter, ctx.request, rt.FileAbsPath)
+			case *vo.AttachmentContentRspDto:
+				return serveAttachmentContent(ctx.responseWriter, ctx.request, rt)
+			case vo.AttachmentContentRspDto:
+				return serveAttachmentContent(ctx.responseWriter, ctx.request, &rt)
+			case *vo.InlineContentRspDto:
+				return serveInlineContent(ctx.responseWriter, ctx.request, rt)
+			case vo.InlineContentRspDto:
+				return serveInlineContent(ctx.responseWriter, ctx.request, &rt)
+
 			default:
 				writeSuccess(ctx.responseWriter, rt)
 			}
@@ -67,4 +83,31 @@ func writeError(w http.ResponseWriter, e interface{}) {
 		w.WriteHeader(rt.Code)
 		fmt.Fprintf(w, "%s", b)
 	}
+}
+
+func serveFileContent(w http.ResponseWriter, req *http.Request, absPath string) error {
+	f, err := os.Open(absPath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	// fi, err := os.Stat(absPath)
+	// if err != nil {
+	// 	return err
+	// }
+	// mt := fi.ModTime()
+	mt := time.Now()
+	http.ServeContent(w, req, f.Name(), mt, f)
+	return nil
+}
+
+func serveAttachmentContent(w http.ResponseWriter, req *http.Request, data *vo.AttachmentContentRspDto) error {
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", data.Name))
+	http.ServeContent(w, req, data.Name, time.Now(), bytes.NewReader(data.Content))
+	return nil
+}
+
+func serveInlineContent(w http.ResponseWriter, req *http.Request, data *vo.InlineContentRspDto) error {
+	http.ServeContent(w, req, "", time.Now(), bytes.NewReader(data.Content))
+	return nil
 }
