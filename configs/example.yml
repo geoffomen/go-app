@@ -1,0 +1,27 @@
+server:
+    port: 8000
+    jwtSecret: example666
+    # 不需要鉴权的访问路径
+    noNeedAuthPath: []
+
+database:
+    dialect: sqlite
+    host: 127.0.0.1
+    port: 3306
+    user: root
+    pass: rootpass
+    db: /tmp/db-example.sqlite
+    maxIdleConn: 5
+    maxOpenConn: 5
+    connMaxLifeTimeSec: 300
+
+log:
+    enableConsole: true
+    consoleJSONFormat: false
+    consoleLevel: debug
+    enableFile: true
+    fileJSONFormat: false
+    fileLevel: debug
+    fileLocation: /tmp/log/info.log
+    errFileLevel: error
+    errFileLocation: /tmp/log/error.log

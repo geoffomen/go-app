@@ -1,0 +1,45 @@
+package {{.ModuleName}}repo
+
+import (
+	"database/sql"
+
+	"{{.GroupId}}/internal/app/common/base/entity"
+	"{{.GroupId}}/internal/app/common/base/vo"
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}dm"
+)
+
+type {{.ModuleName}}Repo struct {
+	db     *sql.DB
+	logger LoggerIface
+}
+
+func New(db *sql.DB, logger LoggerIface) *{{.ModuleName}}Repo {
+	return &{{.ModuleName}}Repo{
+		db:     db,
+		logger: logger,
+	}
+}
+
+func (repo *{{.ModuleName}}Repo) Create(ctx vo.SessionInfo, e {{.ModuleName}}dm.{{.ModuleName}}Entity) (insertedRecordId int64, err error) {
+	return entity.Create[{{.ModuleName}}dm.{{.ModuleName}}Entity](ctx, repo.db, repo.logger, e)
+}
+
+func (repo *{{.ModuleName}}Repo) PhysicalDeleteById(ctx vo.SessionInfo, id int64) error {
+	return entity.PhysicalDeleteById[{{.ModuleName}}dm.{{.ModuleName}}Entity](ctx, repo.db, repo.logger, id)
+}
+
+func (repo *{{.ModuleName}}Repo) LogicalDeleteById(ctx vo.SessionInfo, id int64) error {
+	return entity.LogicalDeleteById[{{.ModuleName}}dm.{{.ModuleName}}Entity](ctx, repo.db, repo.logger, id)
+}
+
+func (repo *{{.ModuleName}}Repo) UpdateById(ctx vo.SessionInfo, e {{.ModuleName}}dm.{{.ModuleName}}Entity) error {
+	return entity.UpdateById[{{.ModuleName}}dm.{{.ModuleName}}Entity](ctx, repo.db, repo.logger, e)
+}
+
+func (repo *{{.ModuleName}}Repo) SelectById(ctx vo.SessionInfo, id int64) (dst *{{.ModuleName}}dm.{{.ModuleName}}Entity, err error) {
+	return entity.SelectById[{{.ModuleName}}dm.{{.ModuleName}}Entity](ctx, repo.db, repo.logger, id)
+}
+
+func (repo *{{.ModuleName}}Repo) SelectPage(ctx vo.SessionInfo, conditions []string, orderBy string, offset int64, limit int64) ([]{{.ModuleName}}dm.{{.ModuleName}}Entity, int64, error) {
+	return entity.SelectPage[{{.ModuleName}}dm.{{.ModuleName}}Entity](ctx, repo.db, repo.logger, conditions, orderBy, offset, limit)
+}

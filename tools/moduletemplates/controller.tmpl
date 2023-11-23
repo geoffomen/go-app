@@ -1,0 +1,21 @@
+package {{.ModuleName}}ctl
+
+import (
+	"{{.GroupId}}/internal/app/common/base/vo"
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}dm"
+)
+
+
+func init() {
+	m := map[string]interface{}{
+
+		// 例子。fix me!
+		"GET /{{.AppName}}/api/v1/{{.ModuleName}}/page": func(ctx vo.SessionInfo, arg {{.ModuleName}}dm.PageRequestDto) (interface{}, error) {
+			return srv.Page(ctx, arg)
+		},
+	}
+
+	for p, h := range m {
+		controllers[p] = h
+	}
+}

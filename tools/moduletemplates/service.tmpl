@@ -1,0 +1,33 @@
+package {{.ModuleName}}srv
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"time"
+
+	"{{.GroupId}}/internal/app/common/base/vo"
+	"{{.GroupId}}/internal/pkg/myerr/myerrimp"
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}dm"
+)
+
+
+// Page 返回分页数据。fix me!
+func (srv *Service) Page(ctx vo.SessionInfo, arg {{.ModuleName}}dm.PageRequestDto) (*vo.PageResponseDto, error) {
+	msg, err := arg.Validate()
+	if err != nil {
+		return nil, myerrimp.New(err).SetCode(http.StatusBadRequest).AddMsgf("%s", msg)
+	}
+
+	entities, total, err := srv.repo.SelectPage(*ctx.SetContext(context.Background()), []string{"1=1", fmt.Sprintf("deleted_time < '%s'", time.UnixMilli(0))}, "", 0, 100)
+	if err != nil {
+		return nil, myerrimp.New(err)
+	}
+	
+	return &vo.PageResponseDto{
+		Total:    total,
+		PageSize: len(entities),
+		List:     entities,
+	}, nil
+}
+

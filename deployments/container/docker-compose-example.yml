@@ -1,0 +1,70 @@
+version: '3.2'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    #ports:
+    #  - "3306:3306" #如果不希望外网能连接容器的mysql, 则不必要端口映射
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      TZ: Asia/Shanghai
+    container_name: example-mysql
+    volumes:
+      - ../mysql/example.sql:/docker-entrypoint-initdb.d/init.sql  # 初始化文件, 相对于compose.yml的路径
+      #- ../mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf  # 配置文件, 相对于compose.yml的路径
+      - /tmp/goapp/example/mysql:/var/lib/mysql #数据文件
+      - /tmp/goapp/example/log/mysql/:/var/log/mysql #日志文件
+    healthcheck:
+        test: ["CMD-SHELL", "mysql --user=root --password=rootpass -e 'SELECT 1' >/dev/null 2>&1"]
+        interval: 15s
+        timeout: 5s
+        retries: 10
+    #network_mode: "host"
+    networks:
+      - network-app-example
+
+  nginx:
+    image: nginx:1.23.3
+    ports:
+      - "1180:80"
+      - "1443:443"
+    restart: always
+    depends_on:
+      - example
+    container_name: example-nginx
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ../nginx/container_example.conf:/etc/nginx/conf.d/default.conf
+      - ../../website/example:/usr/share/nginx/html/example
+      - /tmp/goapp/example/log/nginx:/var/log/nginx
+    #network_mode: "host"
+    networks:
+      - network-app-example
+
+  example:
+    image: example:latest
+    build:
+      context: ../..  # 相对于compose文件的路径
+      dockerfile: ./build/container/Dockerfile # 相对于context的路径
+      args:
+        - APP_NAME=example
+    container_name: example
+    environment:
+      TZ: Asia/Shanghai
+    restart: always
+    volumes:
+      - ../../configs:/opt/example/configs
+      - /tmp/goapp/example/log/example:/var/log/example
+    #ports:
+    #  - "8000:8000"
+    command: ["/opt/example/example.o", "--profile=container-example"]
+    #network_mode: "host"
+    networks:
+      - network-app-example
+
+networks:
+  network-app-example:
+    external: false
