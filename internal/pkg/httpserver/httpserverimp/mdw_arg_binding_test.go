@@ -61,7 +61,7 @@ func TestBindJson(t *testing.T) {
 	}
 	handlerType := reflect.TypeOf(handler)
 	ctx := &Ctx{handlerReflectType: handlerType, request: req}
-	_ = bindArgs()(ctx)
+	_ = argBindingHandler()(ctx)
 	args := ctx.args
 	handlerValue := reflect.ValueOf(handler)
 	handlerValue.Call(args)
@@ -96,7 +96,7 @@ func TestBindQuery(t *testing.T) {
 	}
 	handlerType := reflect.TypeOf(handler)
 	ctx := &Ctx{handlerReflectType: handlerType, request: req}
-	_ = bindArgs()(ctx)
+	_ = argBindingHandler()(ctx)
 	args := ctx.args
 	handlerValue := reflect.ValueOf(handler)
 	handlerValue.Call(args)
@@ -145,7 +145,7 @@ func TestBindFormUrlEncode(t *testing.T) {
 	}
 	handlerType := reflect.TypeOf(handler)
 	ctx := &Ctx{handlerReflectType: handlerType, request: req}
-	_ = bindArgs()(ctx)
+	_ = argBindingHandler()(ctx)
 	args := ctx.args
 	handlerValue := reflect.ValueOf(handler)
 	handlerValue.Call(args)
@@ -210,7 +210,7 @@ func TestBindMultipartForm(t *testing.T) {
 	}
 	handlerType := reflect.TypeOf(handler)
 	ctx := &Ctx{handlerReflectType: handlerType, request: req}
-	_ = bindArgs()(ctx)
+	_ = argBindingHandler()(ctx)
 	args := ctx.args
 	handlerValue := reflect.ValueOf(handler)
 	handlerValue.Call(args)

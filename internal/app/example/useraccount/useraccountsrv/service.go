@@ -50,3 +50,7 @@ func (srv *Service) GenPassword(originPass, salt string) string {
 	hashedPass := hex.EncodeToString(m5.Sum(nil))
 	return hashedPass
 }
+
+func (srv *Service) Auth(req *http.Request) (*vo.SessionInfo, bool) {
+	return &vo.SessionInfo{}, true
+}

@@ -13,6 +13,7 @@ import (
 
 	"example.com/internal/app/example/echoargs/echoargsctl"
 	"example.com/internal/app/example/useraccount/useraccountctl"
+	"example.com/internal/app/example/useraccount/useraccountsrv"
 	"example.com/internal/pkg/httpserver/httpserverimp"
 	"example.com/internal/pkg/myconfig/viperimp"
 	"example.com/internal/pkg/mylog/zapimp"
@@ -62,11 +63,11 @@ func main() {
 	case "mysql":
 		// mysql
 		cfg := mysql.Config{
-			User:   config.GetStringOrDefault("database.user", ""), // os.Getenv("DBUSER"),
-			Passwd: config.GetStringOrDefault("database.pass", ""), // os.Getenv("DBPASS"),
-			Net:    "tcp",
-			Addr:   fmt.Sprintf("%s:%s", config.GetStringOrDefault("database.host", ""), config.GetStringOrDefault("database.port", "")),
-			DBName: config.GetStringOrDefault("database.db", ""),
+			User:                 config.GetStringOrDefault("database.user", ""), // os.Getenv("DBUSER"),
+			Passwd:               config.GetStringOrDefault("database.pass", ""), // os.Getenv("DBPASS"),
+			Net:                  "tcp",
+			Addr:                 fmt.Sprintf("%s:%s", config.GetStringOrDefault("database.host", ""), config.GetStringOrDefault("database.port", "")),
+			DBName:               config.GetStringOrDefault("database.db", ""),
 			AllowNativePasswords: true,
 		}
 		db, err = sql.Open("mysql", cfg.FormatDSN())
@@ -103,8 +104,9 @@ func main() {
 	db.SetMaxOpenConns(config.GetIntOrDefault("database.maxOpenConn", 9))
 
 	httpSrv := httpserverimp.New(&httpserverimp.Options{
-		Port:   config.GetIntOrDefault("server.port", 0),
-		Logger: logger,
+		Port:        config.GetIntOrDefault("server.port", 0),
+		Logger:      logger,
+		AuthHandler: useraccountsrv.GetInstance(),
 	})
 	httpSrv.AddRouter(useraccountctl.New(config, logger, db))
 	httpSrv.AddRouter(echoargsctl.New(config, logger, db))

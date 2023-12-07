@@ -13,7 +13,7 @@ import (
 	"unicode"
 )
 
-func bindArgs() func(ctx *Ctx) error {
+func argBindingHandler() func(ctx *Ctx) error {
 	return func(ctx *Ctx) error {
 
 		handlerType := ctx.getHandlerReflectType()

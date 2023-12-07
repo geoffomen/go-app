@@ -8,12 +8,13 @@ import (
 	"strings"
 )
 
-var hdMap = make(map[string]http.HandlerFunc, 0)
+var handlerMap = make(map[string]http.HandlerFunc, 0)
 
 type MyHttpServer struct {
 	srv         *http.Server
 	logger      LoggerIface
 	middleWares []func(ctx *Ctx) error
+	authHandler AuthIface
 }
 
 func New(opts *Options) *MyHttpServer {
@@ -22,21 +23,22 @@ func New(opts *Options) *MyHttpServer {
 			Addr: fmt.Sprintf(":%d", opts.Port),
 			Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				mp := fmt.Sprintf("%s%s", r.Method, r.URL.Path)
-				if h, ok := hdMap[mp]; ok {
+				if h, ok := handlerMap[mp]; ok {
 					h(w, r)
 				} else {
 					w.WriteHeader(http.StatusNotFound)
-					fmt.Fprintln(w, "请求路径无效")
+					fmt.Fprintf(w, "请求路径无效: %s %s", r.Method, r.URL.Path)
 				}
 			}),
 		},
-		logger: opts.Logger,
+		logger:      opts.Logger,
+		authHandler: opts.AuthHandler,
 	}
 	// 中间件的顺序很重要
 	srv.addMiddleWare(logHandler())
 	srv.addMiddleWare(responseHandler())
-	srv.addMiddleWare(authHandler())
-	srv.addMiddleWare(bindArgs())
+	srv.addMiddleWare(authHandler(srv.authHandler))
+	srv.addMiddleWare(argBindingHandler())
 	return srv
 }
 
@@ -68,8 +70,8 @@ func (s *MyHttpServer) AddRouter(hs map[string]interface{}) error {
 			return fmt.Errorf("failed to register handler, expected format: [method path]，actual format: %s", methodAndPath)
 		}
 		mp := fmt.Sprintf("%s%s", method, reqPath)
-		if _, ok := hdMap[mp]; !ok {
-			hdMap[mp] = s.wrapper(handler)
+		if _, ok := handlerMap[mp]; !ok {
+			handlerMap[mp] = s.handlerWrapper(handler)
 			s.logger.Infof("handler注册成功，%s %s", method, reqPath)
 		} else {
 			return fmt.Errorf("conflict: %s already registed", mp)
@@ -83,7 +85,7 @@ func (s *MyHttpServer) addMiddleWare(mdw func(ctx *Ctx) error) error {
 	return nil
 }
 
-func (s *MyHttpServer) wrapper(handler interface{}) http.HandlerFunc {
+func (s *MyHttpServer) handlerWrapper(handler interface{}) http.HandlerFunc {
 	handlerType := reflect.TypeOf(handler)
 	handlerValue := reflect.ValueOf(handler)
 	if handlerType.Kind() != reflect.Func {
@@ -95,10 +97,10 @@ func (s *MyHttpServer) wrapper(handler interface{}) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := newCtx(w, r)
-		ctx.setLogger(s.logger)
-		ctx.setMiddleware(s.middleWares)
 		ctx.setHandlerReflectType(handlerType)
 		ctx.setHandlerReflectValue(handlerValue)
+		ctx.setLogger(s.logger)
+		ctx.setMiddleware(s.middleWares)
 		ctx.Next()
 	}
 }
