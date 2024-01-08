@@ -1,0 +1,16 @@
+package {{.ModuleName}}Dm
+
+import (
+	"{{.GroupId}}/internal/pkg/myDatabase"
+)
+
+
+// {{.ModuleName}}Entity ..
+type {{.ModuleName}}Entity struct {
+	myDatabase.BaseEntity // 基础字段
+}
+
+// TableName 表名
+func (e {{.ModuleName}}Entity) TableName() string {
+	return "{{.ModuleName}}"
+}

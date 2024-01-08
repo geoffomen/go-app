@@ -1,0 +1,32 @@
+package {{.ModuleName}}Srv
+
+import (
+	"net/http"
+	"time"
+
+	"{{.GroupId}}/internal/pkg/myDatabase"
+	"{{.GroupId}}/internal/pkg/myErr/myErrImp"
+	"{{.GroupId}}/internal/pkg/myHttpServer"
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}Dm"
+)
+
+
+// Page 返回分页数据。fix me!
+func (srv *Service) Page(ctx *myHttpServer.SessionInfo, arg *{{.ModuleName}}Dm.PageRequestDto) (*myHttpServer.PageResponseDto, error) {
+	msg, err := arg.Validate()
+	if err != nil {
+		return nil, myErrImp.New(err).SetCode(http.StatusBadRequest).AddMsgf("%s", msg)
+	}
+
+	entities, total, err := srv.repo.SelectPage(ctx, srv.db, myDatabase.NewFilter().Where("deleted_time <= ?", time.UnixMilli(0)).Offset(0).Limit(10))
+	if err != nil {
+		return nil, myErrImp.New(err)
+	}
+	
+	return &myHttpServer.PageResponseDto{
+		Total:    total,
+		PageSize: len(entities),
+		List:     entities,
+	}, nil
+}
+

@@ -1,0 +1,21 @@
+package {{.ModuleName}}Ctl
+
+import (
+	"{{.GroupId}}/internal/pkg/myHttpServer"
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}Dm"
+)
+
+
+func init() {
+	m := map[string]interface{}{
+
+		// 例子。fix me!
+		"GET /{{.AppName}}/api/v1/{{.ModuleName}}/page": func(ctx *myHttpServer.SessionInfo, arg *{{.ModuleName}}Dm.PageRequestDto) (interface{}, error) {
+			return srv.Page(ctx, arg)
+		},
+	}
+
+	for p, h := range m {
+		controllers[p] = h
+	}
+}

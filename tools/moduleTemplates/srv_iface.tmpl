@@ -1,0 +1,8 @@
+package {{.ModuleName}}Dm
+
+
+import "{{.GroupId}}/internal/pkg/myDatabase"
+
+type SrvIface interface {
+	NewWithDb(db myDatabase.Iface) SrvIface
+}

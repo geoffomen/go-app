@@ -1,0 +1,35 @@
+package {{.ModuleName}}Srv
+
+import (
+	"{{.GroupId}}/internal/pkg/myConfig"
+	"{{.GroupId}}/internal/pkg/myLog"
+	"{{.GroupId}}/internal/pkg/myDatabase"
+)
+
+type Service struct {
+	config myConfig.Iface
+	logger myLog.Iface
+	db     myDatabase.Iface
+	repo   *Repository
+}
+
+var instance *Service = &Service{}
+
+// New ...
+func New(config myConfig.Iface,
+	logger myLog.Iface,
+	db     myDatabase.Iface,
+) *Service {
+	*instance = Service{
+		config: config,
+		logger: logger,
+		db: db,
+	}
+	instance.repo = newRepo(logger)
+	return instance
+}
+
+// GetInstance ..
+func GetInstance() *Service {
+	return instance
+}

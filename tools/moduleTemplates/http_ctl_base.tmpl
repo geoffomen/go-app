@@ -1,0 +1,23 @@
+package {{.ModuleName}}Ctl
+
+import (
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}Srv"
+	"{{.GroupId}}/internal/pkg/myConfig"
+	"{{.GroupId}}/internal/pkg/myDatabase"
+	"{{.GroupId}}/internal/pkg/myLog"
+)
+
+var (
+	controllers map[string]interface{} = make(map[string]interface{})
+	srv         *{{.ModuleName}}Srv.Service
+)
+
+// New ..
+func New(config myConfig.Iface, logger myLog.Iface, db myDatabase.Iface) map[string]interface{} {
+	srv = {{.ModuleName}}Srv.New(
+		config,
+		logger,
+		db,
+	)
+	return controllers
+}

@@ -1,0 +1,42 @@
+package {{.ModuleName}}Srv
+
+import (
+	"{{.GroupId}}/internal/app/{{.AppName}}/{{.ModuleName}}/{{.ModuleName}}Dm"
+	"{{.GroupId}}/internal/pkg/myDatabase"
+	"{{.GroupId}}/internal/pkg/myHttpServer"
+	"{{.GroupId}}/internal/pkg/myLog"
+)
+
+type Repository struct {
+	logger myLog.Iface
+}
+
+func newRepo(logger myLog.Iface) *Repository {
+	return &Repository{
+		logger: logger,
+	}
+}
+
+func (repo *Repository) Create(ctx *myHttpServer.SessionInfo, db myDatabase.Iface, e *{{.ModuleName}}Dm.{{.ModuleName}}Entity) (insertedRecordId int64, err error) {
+	return myDatabase.Create[{{.ModuleName}}Dm.{{.ModuleName}}Entity](db, repo.logger, e)
+}
+
+func (repo *Repository) PhysicalDeleteById(ctx *myHttpServer.SessionInfo, db myDatabase.Iface, id int64) error {
+	return myDatabase.PhysicalDeleteById[{{.ModuleName}}Dm.{{.ModuleName}}Entity](db, repo.logger, id)
+}
+
+func (repo *Repository) LogicalDeleteById(ctx *myHttpServer.SessionInfo, db myDatabase.Iface, id int64) error {
+	return myDatabase.LogicalDeleteById[{{.ModuleName}}Dm.{{.ModuleName}}Entity](ctx.Uid, db, repo.logger, id)
+}
+
+func (repo *Repository) UpdateById(ctx *myHttpServer.SessionInfo, db myDatabase.Iface, e *{{.ModuleName}}Dm.{{.ModuleName}}Entity) error {
+	return myDatabase.UpdateById[{{.ModuleName}}Dm.{{.ModuleName}}Entity](db, repo.logger, e)
+}
+
+func (repo *Repository) SelectById(ctx *myHttpServer.SessionInfo, db myDatabase.Iface, id int64) (dst *{{.ModuleName}}Dm.{{.ModuleName}}Entity, err error) {
+	return myDatabase.SelectById[{{.ModuleName}}Dm.{{.ModuleName}}Entity](db, repo.logger, id)
+}
+
+func (repo *Repository) SelectPage(ctx *myHttpServer.SessionInfo, db myDatabase.Iface, filter *myDatabase.Filter) ([]{{.ModuleName}}Dm.{{.ModuleName}}Entity, int64, error) {
+	return myDatabase.SelectPage[{{.ModuleName}}Dm.{{.ModuleName}}Entity](db, repo.logger, filter)
+}
